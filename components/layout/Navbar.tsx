@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/80 backdrop-blur">
@@ -19,9 +21,12 @@ export default function Navbar() {
             Pricing
           </a>
 
-          <button className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-500">
+          <Link
+            href="/auth/signup"
+            className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-500"
+          >
             Sign In
-          </button>
+          </Link>
         </div>
       </nav>
     </header>
