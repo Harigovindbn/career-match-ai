@@ -54,22 +54,35 @@ export default async function DashboardPage() {
           </p>
 
           <div className="mt-8 grid gap-5 md:grid-cols-3">
-            <article className="rounded-xl border border-slate-800 bg-slate-950 p-6 transition hover:border-blue-500">
+            {/* Complete Profile */}
+            <Link
+              href="/profile"
+              className="block rounded-xl border border-slate-800 bg-slate-950 p-6 transition hover:border-blue-500 hover:bg-slate-900"
+            >
               <h2 className="text-lg font-semibold">Complete Profile</h2>
+
               <p className="mt-2 text-sm text-slate-400">
                 Add your skills, education, projects and experience.
               </p>
-            </article>
 
+              <p className="mt-4 text-sm font-medium text-blue-400">
+                Edit Profile →
+              </p>
+            </Link>
+
+            {/* Analyze Resume */}
             <article className="rounded-xl border border-slate-800 bg-slate-950 p-6 transition hover:border-blue-500">
               <h2 className="text-lg font-semibold">Analyze Resume</h2>
+
               <p className="mt-2 text-sm text-slate-400">
                 Upload your resume and receive AI-powered ATS feedback.
               </p>
             </article>
 
+            {/* Find Job Matches */}
             <article className="rounded-xl border border-slate-800 bg-slate-950 p-6 transition hover:border-blue-500">
               <h2 className="text-lg font-semibold">Find Job Matches</h2>
+
               <p className="mt-2 text-sm text-slate-400">
                 Discover jobs that match your profile and skills.
               </p>
