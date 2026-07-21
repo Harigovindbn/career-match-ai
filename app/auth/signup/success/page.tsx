@@ -13,8 +13,8 @@ export default function SignUpSuccessPage() {
         </h1>
 
         <p className="mt-3 text-slate-400">
-          Your account was created. Open the confirmation email from Supabase
-          to verify your email address.
+          Your account was created successfully. Open the confirmation email
+          from Supabase and verify your email address.
         </p>
 
         <Link
