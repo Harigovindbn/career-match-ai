@@ -1,107 +1,113 @@
 import Link from "next/link";
+import {
+  ArrowUpRight,
+  Bot,
+  BriefcaseBusiness,
+  FileText,
+  UserRound,
+} from "lucide-react";
 
-type QuickAction = {
-  title: string;
-  description: string;
-  href: string;
-  status?: "available" | "coming-soon";
-};
-
-const actions: QuickAction[] = [
+const actions = [
   {
     title: "Complete Profile",
     description: "Update your personal and professional information.",
     href: "/profile",
-    status: "available",
+    icon: UserRound,
+    available: true,
   },
   {
     title: "Upload Resume",
     description: "Upload your resume for AI-powered ATS analysis.",
     href: "/resume",
-    status: "coming-soon",
+    icon: FileText,
+    available: false,
   },
   {
     title: "Find Job Matches",
-    description: "Discover job opportunities that fit your skills.",
+    description: "Discover opportunities that fit your professional skills.",
     href: "/jobs",
-    status: "coming-soon",
+    icon: BriefcaseBusiness,
+    available: false,
   },
   {
     title: "AI Career Assistant",
-    description: "Get personalized career guidance and interview help.",
+    description: "Get personalized career guidance and interview support.",
     href: "/assistant",
-    status: "coming-soon",
+    icon: Bot,
+    available: false,
   },
 ];
 
 export default function QuickActions() {
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+    <section className="rounded-3xl border border-white/10 bg-card-dark p-6 text-white sm:p-7">
       <div>
-        <p className="text-sm font-medium uppercase tracking-wider text-blue-500">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/60">
           Shortcuts
         </p>
 
-        <h2 className="mt-2 text-xl font-bold text-white">
-          Quick Actions
-        </h2>
+        <h3 className="mt-2 text-xl font-semibold tracking-tight text-white">
+          Quick actions
+        </h3>
 
-        <p className="mt-2 text-sm text-slate-400">
-          Access the most important CareerMatchAI tools.
+        <p className="mt-2 text-sm text-white/65">
+          Access the most important Career Match AI tools.
         </p>
       </div>
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-2">
+      <div className="mt-7 grid gap-3 sm:grid-cols-2">
         {actions.map((action) => {
-          const isAvailable = action.status === "available";
+          const Icon = action.icon;
 
-          if (isAvailable) {
+          if (!action.available) {
             return (
-              <Link
+              <div
                 key={action.title}
-                href={action.href}
-                className="group rounded-xl border border-slate-800 bg-slate-950 p-5 transition hover:-translate-y-1 hover:border-blue-500 hover:bg-slate-900"
+                className="relative cursor-not-allowed rounded-2xl border border-white/10 bg-white/10 p-4 opacity-70"
               >
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <h3 className="font-semibold text-white">
-                      {action.title}
-                    </h3>
-
-                    <p className="mt-2 text-sm leading-6 text-slate-400">
-                      {action.description}
-                    </p>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white">
+                    <Icon className="h-5 w-5" />
                   </div>
 
-                  <span className="text-blue-400 transition group-hover:translate-x-1">
-                    →
+                  <span className="rounded-full border border-white/10 bg-white/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/55">
+                    Soon
                   </span>
                 </div>
-              </Link>
+
+                <p className="mt-4 font-semibold text-white">
+                  {action.title}
+                </p>
+
+                <p className="mt-2 text-sm leading-6 text-white/65">
+                  {action.description}
+                </p>
+              </div>
             );
           }
 
           return (
-            <div
+            <Link
               key={action.title}
-              className="rounded-xl border border-slate-800 bg-slate-950 p-5 opacity-70"
+              href={action.href}
+              className="group rounded-2xl border border-white/10 bg-white/10 p-4 hover:bg-white/15"
             >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <h3 className="font-semibold text-white">
-                    {action.title}
-                  </h3>
-
-                  <p className="mt-2 text-sm leading-6 text-slate-400">
-                    {action.description}
-                  </p>
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-brand-dark">
+                  <Icon className="h-5 w-5" />
                 </div>
 
-                <span className="shrink-0 rounded-full bg-slate-800 px-2.5 py-1 text-xs font-medium text-slate-400">
-                  Soon
-                </span>
+                <ArrowUpRight className="h-5 w-5 text-white/55 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white" />
               </div>
-            </div>
+
+              <p className="mt-4 font-semibold text-white">
+                {action.title}
+              </p>
+
+              <p className="mt-2 text-sm leading-6 text-white/65">
+                {action.description}
+              </p>
+            </Link>
           );
         })}
       </div>

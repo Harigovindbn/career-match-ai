@@ -1,18 +1,13 @@
 "use server";
 
 import { redirect } from "next/navigation";
+
 import { createClient } from "@/lib/supabase/server";
 
 export async function logout() {
   const supabase = await createClient();
 
-  const { error } = await supabase.auth.signOut();
-
-  if (error) {
-    redirect(
-      `/dashboard?error=${encodeURIComponent("Unable to sign out. Please try again.")}`
-    );
-  }
+  await supabase.auth.signOut();
 
   redirect("/auth/login");
 }
