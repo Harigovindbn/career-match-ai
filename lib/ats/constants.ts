@@ -1,0 +1,177 @@
+export const REQUIRED_RESUME_SECTIONS = [
+  "summary",
+  "skills",
+  "experience",
+  "education",
+];
+
+export const OPTIONAL_RESUME_SECTIONS = [
+  "projects",
+  "certifications",
+  "achievements",
+  "languages",
+  "internships",
+];
+
+export const SECTION_ALIASES: Record<string, string[]> = {
+  summary: [
+    "summary",
+    "professional summary",
+    "career summary",
+    "profile",
+    "career objective",
+    "objective",
+    "about me",
+  ],
+
+  skills: [
+    "skills",
+    "technical skills",
+    "core skills",
+    "key skills",
+    "competencies",
+    "technologies",
+  ],
+
+  experience: [
+    "experience",
+    "work experience",
+    "professional experience",
+    "employment history",
+    "work history",
+  ],
+
+  education: [
+    "education",
+    "academic background",
+    "academic qualifications",
+    "qualifications",
+  ],
+
+  projects: [
+    "projects",
+    "academic projects",
+    "personal projects",
+    "key projects",
+    "project experience",
+  ],
+
+  certifications: [
+    "certifications",
+    "certificates",
+    "professional certifications",
+    "courses",
+  ],
+
+  achievements: [
+    "achievements",
+    "awards",
+    "accomplishments",
+    "honours",
+    "honors",
+  ],
+
+  languages: [
+    "languages",
+    "language proficiency",
+  ],
+
+  internships: [
+    "internships",
+    "internship experience",
+    "industrial training",
+    "training",
+  ],
+};
+
+export const COMMON_SKILLS = [
+  "html",
+  "css",
+  "javascript",
+  "typescript",
+  "react",
+  "react.js",
+  "next.js",
+  "nextjs",
+  "node.js",
+  "nodejs",
+  "python",
+  "java",
+  "c",
+  "c++",
+  "c#",
+  "php",
+  "sql",
+  "mysql",
+  "postgresql",
+  "mongodb",
+  "supabase",
+  "firebase",
+  "tailwind css",
+  "bootstrap",
+  "figma",
+  "git",
+  "github",
+  "rest api",
+  "restful api",
+  "django",
+  "flask",
+  "machine learning",
+  "deep learning",
+  "data analysis",
+  "data visualization",
+  "power bi",
+  "tableau",
+  "excel",
+  "numpy",
+  "pandas",
+  "scikit-learn",
+  "tensorflow",
+  "pytorch",
+  "communication",
+  "teamwork",
+  "leadership",
+  "problem solving",
+  "time management",
+  "project management",
+  "ui design",
+  "graphic design",
+];
+
+export const ACTION_VERBS = [
+  "achieved",
+  "analysed",
+  "analyzed",
+  "built",
+  "created",
+  "designed",
+  "developed",
+  "delivered",
+  "deployed",
+  "enhanced",
+  "implemented",
+  "improved",
+  "increased",
+  "launched",
+  "led",
+  "managed",
+  "optimized",
+  "organised",
+  "organized",
+  "reduced",
+  "resolved",
+  "supported",
+  "tested",
+  "trained",
+  "updated",
+];
+
+export const WEAK_PHRASES = [
+  "responsible for",
+  "worked on",
+  "helped with",
+  "participated in",
+  "duties included",
+  "tasked with",
+  "involved in",
+];

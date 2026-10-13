@@ -9,8 +9,10 @@ import {
   BriefcaseBusiness,
   FileText,
   LayoutDashboard,
+  ScanSearch,
   Settings,
   UserRound,
+  WandSparkles,
 } from "lucide-react";
 
 type NavigationItem = {
@@ -40,10 +42,22 @@ const navigationItems: NavigationItem[] = [
     available: true,
   },
   {
-    label: "Job Matches",
-    href: "/jobs",
+    label: "ATS Score",
+    href: "/ats-score",
+    icon: ScanSearch,
+    available: true,
+  },
+  {
+    label: "Resume Optimizer",
+    href: "/resume-optimizer",
+    icon: WandSparkles,
+    available: true,
+  },
+  {
+    label: "Job Match",
+    href: "/job-match",
     icon: BriefcaseBusiness,
-    available: false,
+    available: true,
   },
   {
     label: "AI Assistant",
@@ -134,20 +148,6 @@ export default function AppSidebar() {
           );
         })}
       </nav>
-
-      {/* Bottom card */}
-      <div className="shrink-0 border-t border-white/10 p-4">
-        <div className="rounded-3xl border border-white/20 bg-white/10 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.14)] backdrop-blur-xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.1em] text-white">
-            Build your career
-          </p>
-
-          <p className="mt-3 text-xs leading-6 text-white/65">
-            Complete your profile and upload a resume to unlock AI-powered
-            career tools.
-          </p>
-        </div>
-      </div>
     </aside>
   );
 }
