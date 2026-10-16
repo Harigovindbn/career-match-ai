@@ -144,23 +144,23 @@ export default function OptimizedResumePreview({
     : optimizedText;
 
   return (
-    <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+    <section className="rounded-3xl border border-[#21252d] bg-[#121417] p-6 text-white shadow-2xl sm:p-8">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex items-start gap-4">
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-violet-100 text-violet-700">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[#99f6e4]/20 bg-[#99f6e4]/10 text-[#99f6e4]">
             <Sparkles className="h-5 w-5" />
           </div>
 
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#99f6e4]">
               Optimized draft
             </p>
 
-            <h2 className="mt-1 text-xl font-semibold text-slate-950">
+            <h2 className="mt-1 text-xl font-bold text-white">
               Resume Preview
             </h2>
 
-            <p className="mt-2 text-sm leading-6 text-slate-500">
+            <p className="mt-2 text-xs leading-6 text-[#8e95a2]">
               {replacementsApplied > 0
                 ? `${replacementsApplied} bullet ${
                     replacementsApplied === 1
@@ -181,7 +181,7 @@ export default function OptimizedResumePreview({
                   !current,
               )
             }
-            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-[#21252d] bg-[#181b20] px-4 text-xs font-semibold text-[#8e95a2] transition hover:bg-[#21252d] hover:text-white"
           >
             <RefreshCcw className="h-4 w-4" />
 
@@ -194,11 +194,11 @@ export default function OptimizedResumePreview({
             type="button"
             onClick={handleCopy}
             disabled={!optimizedText}
-            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-[#21252d] bg-[#181b20] px-4 text-xs font-semibold text-[#8e95a2] transition hover:bg-[#21252d] hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
           >
             {copied ? (
               <>
-                <Check className="h-4 w-4" />
+                <Check className="h-4 w-4 text-[#99f6e4]" />
                 Copied
               </>
             ) : (
@@ -213,7 +213,7 @@ export default function OptimizedResumePreview({
             type="button"
             onClick={handleDownload}
             disabled={!optimizedText}
-            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-[#21252d] bg-[#181b20] px-4 text-xs font-semibold text-[#8e95a2] transition hover:bg-[#21252d] hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Download className="h-4 w-4" />
             Download
@@ -227,7 +227,7 @@ export default function OptimizedResumePreview({
               !optimizedText ||
               !jobDescription.trim()
             }
-            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
+            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl bg-[#99f6e4] px-4 text-xs font-semibold text-[#042f2e] transition hover:bg-[#5eead4] shadow-lg shadow-[#99f6e4]/10 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isPending ? (
               <>
@@ -246,22 +246,22 @@ export default function OptimizedResumePreview({
 
       {saveMessage ? (
         <div
-          className={`mt-5 rounded-2xl border px-4 py-3 text-sm ${
+          className={`mt-5 rounded-2xl border px-4 py-3 text-xs font-medium ${
             saveStatus === "success"
-              ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-              : "border-red-200 bg-red-50 text-red-700"
+              ? "border-[#99f6e4]/30 bg-[#99f6e4]/10 text-[#99f6e4]"
+              : "border-rose-500/30 bg-rose-500/10 text-rose-400"
           }`}
         >
           {saveMessage}
         </div>
       ) : null}
 
-      <div className="mt-6 overflow-hidden rounded-3xl border border-slate-200 bg-slate-50">
-        <div className="flex items-center justify-between border-b border-slate-200 bg-white px-5 py-4">
+      <div className="mt-6 overflow-hidden rounded-3xl border border-[#21252d] bg-[#181b20]">
+        <div className="flex items-center justify-between border-b border-[#21252d] bg-[#121417] px-5 py-4">
           <div className="flex items-center gap-2">
-            <FileText className="h-4 w-4 text-slate-500" />
+            <FileText className="h-4 w-4 text-[#8e95a2]" />
 
-            <p className="text-sm font-semibold text-slate-800">
+            <p className="text-xs font-semibold uppercase tracking-wider text-white">
               {showOriginal
                 ? "Original Resume"
                 : "Optimized Resume"}
@@ -269,10 +269,10 @@ export default function OptimizedResumePreview({
           </div>
 
           <span
-            className={`rounded-full px-3 py-1 text-xs font-semibold ${
+            className={`rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-wider ${
               showOriginal
-                ? "bg-slate-100 text-slate-600"
-                : "bg-emerald-100 text-emerald-700"
+                ? "border-[#21252d] bg-[#181b20] text-[#8e95a2]"
+                : "border-[#99f6e4]/30 bg-[#99f6e4]/10 text-[#99f6e4]"
             }`}
           >
             {showOriginal
@@ -283,19 +283,19 @@ export default function OptimizedResumePreview({
 
         <div className="max-h-[700px] overflow-y-auto p-5 sm:p-6">
           {displayedText ? (
-            <pre className="whitespace-pre-wrap break-words font-sans text-sm leading-7 text-slate-700">
+            <pre className="whitespace-pre-wrap break-words font-sans text-xs leading-relaxed text-[#8e95a2]">
               {displayedText}
             </pre>
           ) : (
-            <p className="text-sm text-slate-500">
+            <p className="text-xs text-[#8e95a2]">
               No resume content is available.
             </p>
           )}
         </div>
       </div>
 
-      <div className="mt-5 rounded-2xl border border-blue-200 bg-blue-50 px-4 py-3">
-        <p className="text-sm leading-6 text-blue-800">
+      <div className="mt-5 rounded-2xl border border-[#99f6e4]/20 bg-[#99f6e4]/5 px-4 py-3">
+        <p className="text-xs leading-relaxed text-[#99f6e4]">
           Review every suggested change before
           using this resume. Only keep statements
           that accurately represent your real

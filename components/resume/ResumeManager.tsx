@@ -216,31 +216,31 @@ export default function ResumeManager({
 
       <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
         {/* Resume card */}
-        <article className="group flex min-h-[280px] flex-col rounded-3xl border border-white/10 bg-card-dark p-6 text-white transition duration-300 hover:-translate-y-1 hover:bg-card-dark-hover hover:shadow-xl">
+        <article className="group flex min-h-[280px] flex-col rounded-3xl border border-[#21252d] bg-[#121417] p-6 text-white transition duration-300 hover:-translate-y-1 hover:border-[#99f6e4]/40 hover:bg-[#181b20] hover:shadow-2xl">
           <div className="flex items-center justify-between gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-white">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#99f6e4]/20 bg-[#99f6e4]/10 text-[#99f6e4]">
               <FileText className="h-6 w-6" />
             </div>
 
-            <span className="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/60">
+            <span className="rounded-full border border-[#21252d] bg-[#181b20] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#99f6e4]">
               Resume
             </span>
           </div>
 
           <div className="mt-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/65">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#99f6e4]">
               Current document
             </p>
 
             <h3
               title={fileName}
-              className="mt-3 line-clamp-2 break-words text-xl font-semibold leading-7 text-white"
+              className="mt-3 line-clamp-2 break-words text-xl font-bold leading-7 text-white"
             >
               {fileName}
             </h3>
 
-            <div className="mt-4 flex items-center gap-2 text-sm text-white/65">
-              <HardDrive className="h-4 w-4 shrink-0" />
+            <div className="mt-4 flex items-center gap-2 text-xs text-[#8e95a2]">
+              <HardDrive className="h-4 w-4 shrink-0 text-[#99f6e4]" />
 
               <span>
                 {fileSize || "File size unavailable"}
@@ -248,34 +248,34 @@ export default function ResumeManager({
             </div>
           </div>
 
-          <p className="mt-auto pt-6 text-sm leading-6 text-white/55">
+          <p className="mt-auto pt-6 text-xs leading-6 text-[#8e95a2]">
             Your latest professional resume stored in your account.
           </p>
         </article>
 
         {/* Status card */}
-        <article className="group flex min-h-[280px] flex-col rounded-3xl border border-white/10 bg-card-dark p-6 text-white transition duration-300 hover:-translate-y-1 hover:bg-card-dark-hover hover:shadow-xl">
+        <article className="group flex min-h-[280px] flex-col rounded-3xl border border-[#21252d] bg-[#121417] p-6 text-white transition duration-300 hover:-translate-y-1 hover:border-[#99f6e4]/40 hover:bg-[#181b20] hover:shadow-2xl">
           <div className="flex items-center justify-between gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-white">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#99f6e4]/20 bg-[#99f6e4]/10 text-[#99f6e4]">
               <CheckCircle2 className="h-6 w-6" />
             </div>
 
-            <span className="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/60">
+            <span className="rounded-full border border-[#21252d] bg-[#181b20] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#99f6e4]">
               Status
             </span>
           </div>
 
           <div className="mt-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/65">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#99f6e4]">
               Upload status
             </p>
 
-            <p className="mt-3 text-3xl font-semibold tracking-tight text-white">
+            <p className="mt-3 text-3xl font-bold tracking-tight text-white">
               {statusLabel}
             </p>
 
-            <div className="mt-4 flex items-start gap-2 text-sm leading-6 text-white/65">
-              <CalendarDays className="mt-1 h-4 w-4 shrink-0" />
+            <div className="mt-4 flex items-start gap-2 text-xs leading-6 text-[#8e95a2]">
+              <CalendarDays className="mt-0.5 h-4 w-4 shrink-0 text-[#99f6e4]" />
 
               <span>
                 {uploadedAt
@@ -285,70 +285,70 @@ export default function ResumeManager({
             </div>
           </div>
 
-          <p className="mt-auto pt-6 text-sm leading-6 text-white/55">
+          <p className="mt-auto pt-6 text-xs leading-6 text-[#8e95a2]">
             Your resume is available for Career Match AI tools.
           </p>
         </article>
 
         {/* ATS card */}
-        <article className="group flex min-h-[280px] flex-col rounded-3xl border border-white/10 bg-card-dark p-6 text-white transition duration-300 hover:-translate-y-1 hover:bg-card-dark-hover hover:shadow-xl">
+        <article className="group flex min-h-[280px] flex-col rounded-3xl border border-[#21252d] bg-[#121417] p-6 text-white transition duration-300 hover:-translate-y-1 hover:border-[#99f6e4]/40 hover:bg-[#181b20] hover:shadow-2xl">
           <div className="flex items-center justify-between gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-white">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#99f6e4]/20 bg-[#99f6e4]/10 text-[#99f6e4]">
               <Gauge className="h-6 w-6" />
             </div>
 
-            <span className="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/60">
+            <span className="rounded-full border border-[#21252d] bg-[#181b20] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#99f6e4]">
               ATS
             </span>
           </div>
 
           <div className="mt-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/65">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#99f6e4]">
               ATS score
             </p>
 
             <div className="mt-3 flex items-end gap-2">
-              <p className="text-4xl font-semibold tracking-tight text-white">
+              <p className="text-4xl font-bold tracking-tight text-white">
                 {atsScore ?? "—"}
               </p>
 
               {atsScore !== null && (
-                <span className="pb-1 text-base text-white/55">
+                <span className="pb-1 text-sm text-[#8e95a2]">
                   /100
                 </span>
               )}
             </div>
 
-            <p className="mt-4 text-sm leading-6 text-white/65">
+            <p className="mt-4 text-xs leading-6 text-[#8e95a2]">
               {atsScore === null
                 ? "Your resume has not been analysed yet."
                 : "Your latest resume analysis score."}
             </p>
           </div>
 
-          <p className="mt-auto pt-6 text-sm leading-6 text-white/55">
+          <p className="mt-auto pt-6 text-xs leading-6 text-[#8e95a2]">
             ATS analysis details will be displayed after processing.
           </p>
         </article>
 
         {/* Actions card */}
-        <article className="group flex min-h-[280px] flex-col rounded-3xl border border-white/10 bg-card-dark p-6 text-white transition duration-300 hover:-translate-y-1 hover:bg-card-dark-hover hover:shadow-xl">
+        <article className="group flex min-h-[280px] flex-col rounded-3xl border border-[#21252d] bg-[#121417] p-6 text-white transition duration-300 hover:-translate-y-1 hover:border-[#99f6e4]/40 hover:bg-[#181b20] hover:shadow-2xl">
           <div className="flex items-center justify-between gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-white">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#99f6e4]/20 bg-[#99f6e4]/10 text-[#99f6e4]">
               <RefreshCw className="h-6 w-6" />
             </div>
 
-            <span className="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/60">
+            <span className="rounded-full border border-[#21252d] bg-[#181b20] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#99f6e4]">
               Actions
             </span>
           </div>
 
           <div className="mt-6 flex flex-1 flex-col">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/65">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#99f6e4]">
               Manage resume
             </p>
 
-            <p className="mt-3 text-sm leading-6 text-white/65">
+            <p className="mt-3 text-xs leading-6 text-[#8e95a2]">
               Replace your current document or remove it from your account.
             </p>
 
@@ -357,7 +357,7 @@ export default function ResumeManager({
                 type="button"
                 onClick={handleReplaceClick}
                 disabled={isBusy}
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-white px-4 py-2.5 text-sm font-semibold text-brand-dark transition hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#99f6e4] px-4 py-2.5 text-xs font-semibold text-[#042f2e] transition hover:bg-[#5eead4] shadow-lg shadow-[#99f6e4]/10 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {replacing ? (
                   <LoaderCircle className="h-4 w-4 animate-spin" />
@@ -374,7 +374,7 @@ export default function ResumeManager({
                 type="button"
                 onClick={handleDelete}
                 disabled={isBusy}
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-red-300/20 bg-red-500/10 px-4 py-2.5 text-sm font-semibold text-red-100 transition hover:bg-red-500/20 disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-2.5 text-xs font-semibold text-rose-400 transition hover:bg-rose-500/20 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {deleting ? (
                   <LoaderCircle className="h-4 w-4 animate-spin" />
@@ -394,10 +394,10 @@ export default function ResumeManager({
       {message && (
         <div
           role="status"
-          className="rounded-2xl border border-emerald-300/20 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-100"
+          className="rounded-2xl border border-[#99f6e4]/30 bg-[#99f6e4]/10 px-4 py-3 text-xs font-medium text-[#99f6e4]"
         >
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="h-5 w-5 shrink-0" />
+            <CheckCircle2 className="h-4 w-4 shrink-0" />
 
             <span>{message}</span>
           </div>
@@ -407,7 +407,7 @@ export default function ResumeManager({
       {error && (
         <div
           role="alert"
-          className="rounded-2xl border border-red-300/20 bg-red-500/10 px-4 py-3 text-sm text-red-100"
+          className="rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-xs font-medium text-rose-400"
         >
           {error}
         </div>

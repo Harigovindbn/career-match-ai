@@ -1,50 +1,44 @@
 import Link from "next/link";
-import { ArrowRight, Sparkles } from "lucide-react";
-
-type WelcomeCardProps = {
-  fullName: string;
-  email: string;
-};
+import { Sparkles, ArrowRight } from "lucide-react";
 
 export default function WelcomeCard({
   fullName,
   email,
-}: WelcomeCardProps) {
+}: {
+  fullName: string;
+  email: string;
+}) {
   return (
-    <section className="relative overflow-hidden rounded-3xl bg-brand-dark p-7 text-white sm:p-8">
-      <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/5" />
-      <div className="absolute -bottom-24 right-20 h-52 w-52 rounded-full bg-white/5" />
-
-      <div className="relative">
-        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10">
-          <Sparkles className="h-5 w-5" />
+    <div className="relative overflow-hidden rounded-3xl border border-[#21252d] bg-[#121417] p-8 text-white">
+      <div className="relative z-10 space-y-4">
+        <div className="inline-flex items-center gap-2 rounded-xl bg-[#181b20] border border-[#21252d] px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[#99f6e4]">
+          <Sparkles className="h-3.5 w-3.5" />
+          Career Match AI
         </div>
 
-        <p className="mt-7 text-xs font-semibold uppercase tracking-[0.2em] text-white/60">
-          Career Match AI
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight text-white">
+            Welcome, <span className="text-[#99f6e4]">{fullName}</span>
+          </h2>
+          <p className="mt-1 text-sm text-[#8e95a2]">
+            Signed in as <span className="text-white font-medium">{email}</span>
+          </p>
+        </div>
+
+        <p className="max-w-xl text-sm leading-relaxed text-[#8e95a2]">
+          Complete your professional profile, upload your resume, and use AI-powered tools to improve your career opportunities.
         </p>
 
-        <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
-          Welcome, {fullName}
-        </h2>
-
-        <p className="mt-3 text-sm text-white/60">
-          You are signed in as {email}.
-        </p>
-
-        <p className="mt-6 max-w-2xl text-sm leading-7 text-white/75 sm:text-base">
-          Complete your professional profile, upload your resume, and use
-          AI-powered tools to improve your career opportunities.
-        </p>
-
-        <Link
-          href="/profile"
-          className="mt-7 inline-flex items-center gap-2 rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-brand-dark hover:bg-white/90"
-        >
-          Complete your profile
-          <ArrowRight className="h-4 w-4" />
-        </Link>
+        <div className="pt-2">
+          <Link
+            href="/profile"
+            className="inline-flex items-center gap-2 rounded-xl bg-[#99f6e4] px-5 py-2.5 text-sm font-semibold text-[#042f2e] transition hover:bg-[#5eead4]"
+          >
+            Complete your profile
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
       </div>
-    </section>
+    </div>
   );
 }

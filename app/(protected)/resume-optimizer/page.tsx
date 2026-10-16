@@ -73,40 +73,42 @@ export default function ResumeOptimizerPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-5">
+    <div className="container mx-auto px-4 py-8 max-w-7xl space-y-6 bg-[var(--background)] text-[var(--foreground)] min-h-screen">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[var(--border)] pb-5">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-            <Sparkles className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+          <h1 className="text-2xl font-bold tracking-tight text-[var(--foreground)] flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-[var(--primary)]" />
             Resume Optimizer
           </h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+          <p className="text-xs sm:text-sm text-[var(--muted)] mt-1">
             Tailor your resume to target job descriptions, increase keyword match scores, and track your optimization history.
           </p>
         </div>
 
-        <div className="flex bg-zinc-100 dark:bg-zinc-800 p-1 rounded-xl w-fit">
+        <div className="flex bg-[var(--surface)] border border-[var(--border)] p-1 rounded-2xl w-fit shadow-lg">
           <button
+            type="button"
             onClick={() => setActiveTab('optimizer')}
-            className={`flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-lg transition ${
+            className={`flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl transition ${
               activeTab === 'optimizer'
-                ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-sm'
-                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
+                ? 'bg-[var(--primary)] text-[var(--primary-text)] shadow-md shadow-[color-mix(in_srgb,var(--primary)_10%,transparent)]'
+                : 'text-[var(--muted)] hover:text-[var(--foreground)]'
             }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
             Optimizer
           </button>
           <button
+            type="button"
             onClick={() => {
               setActiveTab('history');
               setLoadingHistory(true);
               fetchHistory();
             }}
-            className={`flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-lg transition ${
+            className={`flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl transition ${
               activeTab === 'history'
-                ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-sm'
-                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
+                ? 'bg-[var(--primary)] text-[var(--primary-text)] shadow-md shadow-[color-mix(in_srgb,var(--primary)_10%,transparent)]'
+                : 'text-[var(--muted)] hover:text-[var(--foreground)]'
             }`}
           >
             <History className="w-3.5 h-3.5" />
@@ -120,22 +122,23 @@ export default function ResumeOptimizerPage() {
       ) : (
         <div className="space-y-4">
           {loadingHistory ? (
-            <div className="flex flex-col items-center justify-center p-12 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800">
-              <Loader2 className="w-8 h-8 animate-spin text-blue-600 mb-3" />
-              <p className="text-sm text-zinc-500 dark:text-zinc-400">Loading saved optimizations...</p>
+            <div className="flex flex-col items-center justify-center p-12 bg-[var(--surface)] rounded-3xl border border-[var(--border)] shadow-2xl">
+              <Loader2 className="w-8 h-8 animate-spin text-[var(--primary)] mb-3" />
+              <p className="text-xs text-[var(--muted)]">Loading saved optimizations...</p>
             </div>
           ) : history.length === 0 ? (
-            <div className="p-12 text-center bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800">
-              <FileText className="w-10 h-10 text-zinc-400 mx-auto mb-3" />
-              <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
+            <div className="p-12 text-center bg-[var(--surface)] rounded-3xl border border-[var(--border)] shadow-2xl">
+              <FileText className="w-10 h-10 text-[var(--primary)] mx-auto mb-3" />
+              <h3 className="text-base font-bold text-[var(--foreground)] mb-1">
                 No Saved Optimizations
               </h3>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4">
+              <p className="text-xs text-[var(--muted)] mb-4">
                 You haven&apos;t saved any optimized resumes yet. Run an optimization to get started.
               </p>
               <button
+                type="button"
                 onClick={() => setActiveTab('optimizer')}
-                className="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                className="inline-flex items-center gap-2 text-xs font-semibold px-5 py-2.5 bg-[var(--primary)] text-[var(--primary-text)] rounded-xl hover:bg-[var(--primary-hover)] shadow-lg shadow-[color-mix(in_srgb,var(--primary)_10%,transparent)] transition"
               >
                 Go to Optimizer
               </button>
@@ -145,21 +148,21 @@ export default function ResumeOptimizerPage() {
               {history.map((record) => (
                 <div
                   key={record.id}
-                  className="p-5 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 space-y-4"
+                  className="p-6 bg-[var(--surface)] rounded-3xl border border-[var(--border)] shadow-2xl space-y-4"
                 >
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-100 dark:border-zinc-800 pb-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border)] pb-4">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                        <span className="text-sm font-bold text-[var(--foreground)]">
                           Optimization Run
                         </span>
-                        <span className="text-xs px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
+                        <span className="text-[10px] px-3 py-0.5 rounded-full font-bold uppercase tracking-wider bg-[color-mix(in_srgb,var(--primary)_10%,transparent)] text-[var(--primary)] border border-[color-mix(in_srgb,var(--primary)_30%,transparent)]">
                           {record.match_score}% Match Score
                         </span>
                       </div>
-                      <div className="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400">
+                      <div className="flex items-center gap-3 text-xs text-[var(--muted)]">
                         <span className="flex items-center gap-1">
-                          <Calendar className="w-3.5 h-3.5" />
+                          <Calendar className="w-3.5 h-3.5 text-[var(--primary)]" />
                           {new Date(record.created_at).toLocaleDateString()}
                         </span>
                         <span>•</span>
@@ -168,9 +171,10 @@ export default function ResumeOptimizerPage() {
                     </div>
 
                     <button
+                      type="button"
                       onClick={() => handleDelete(record.id)}
                       disabled={deletingId === record.id}
-                      className="inline-flex items-center gap-1.5 text-xs text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 px-3 py-1.5 rounded-lg border border-red-200 dark:border-red-900/40 transition w-fit"
+                      className="inline-flex items-center gap-1.5 text-xs text-rose-400 bg-rose-500/10 hover:bg-rose-500/20 px-3 py-2 rounded-xl border border-rose-500/30 transition w-fit disabled:opacity-50"
                     >
                       {deletingId === record.id ? (
                         <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -182,15 +186,15 @@ export default function ResumeOptimizerPage() {
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-4 text-xs">
-                    <div className="space-y-1">
-                      <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                    <div className="space-y-1.5">
+                      <span className="font-semibold uppercase tracking-wider text-[11px] text-[var(--muted)]">
                         Matching Skills ({record.matching_skills?.length || 0})
                       </span>
-                      <div className="flex flex-wrap gap-1">
+                      <div className="flex flex-wrap gap-1.5">
                         {record.matching_skills?.map((skill, i) => (
                           <span
                             key={i}
-                            className="px-2 py-0.5 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 rounded border border-emerald-200 dark:border-emerald-900/40"
+                            className="px-2.5 py-1 bg-[color-mix(in_srgb,var(--primary)_10%,transparent)] text-[var(--primary)] rounded-lg border border-[color-mix(in_srgb,var(--primary)_30%,transparent)] text-[11px] font-medium"
                           >
                             {skill}
                           </span>
@@ -198,15 +202,15 @@ export default function ResumeOptimizerPage() {
                       </div>
                     </div>
 
-                    <div className="space-y-1">
-                      <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                    <div className="space-y-1.5">
+                      <span className="font-semibold uppercase tracking-wider text-[11px] text-[var(--muted)]">
                         Missing Skills ({record.missing_skills?.length || 0})
                       </span>
-                      <div className="flex flex-wrap gap-1">
+                      <div className="flex flex-wrap gap-1.5">
                         {record.missing_skills?.map((skill, i) => (
                           <span
                             key={i}
-                            className="px-2 py-0.5 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 rounded border border-amber-200 dark:border-amber-900/40"
+                            className="px-2.5 py-1 bg-rose-500/10 text-rose-400 rounded-lg border border-rose-500/30 text-[11px] font-medium"
                           >
                             {skill}
                           </span>

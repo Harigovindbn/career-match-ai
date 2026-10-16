@@ -12,14 +12,14 @@ function SkillBadge({
   variant: "match" | "missing" | "extra";
 }) {
   const styles = {
-    match: "bg-emerald-100 text-emerald-700 border-emerald-200",
-    missing: "bg-red-100 text-red-700 border-red-200",
-    extra: "bg-slate-100 text-slate-700 border-slate-200",
+    match: "bg-[#99f6e4]/10 text-[#99f6e4] border-[#99f6e4]/30",
+    missing: "bg-rose-500/10 text-rose-400 border-rose-500/30",
+    extra: "bg-[#181b20] text-[#8e95a2] border-[#21252d]",
   };
 
   return (
     <span
-      className={`rounded-full border px-3 py-1 text-sm font-medium ${styles[variant]}`}
+      className={`rounded-full border px-3.5 py-1.5 text-xs font-semibold transition ${styles[variant]}`}
     >
       {label}
     </span>
@@ -32,9 +32,10 @@ export default function SkillsCard({
   additionalSkills,
 }: SkillsCardProps) {
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-8">
+    <section className="rounded-3xl border border-[#21252d] bg-[#121417] p-6 text-white shadow-2xl space-y-8 sm:p-8">
+      {/* Matching Skills */}
       <div>
-        <h2 className="mb-4 text-lg font-semibold text-slate-900">
+        <h2 className="mb-4 text-xs font-semibold uppercase tracking-wider text-[#99f6e4]">
           ✅ Matching Skills ({matchingSkills.length})
         </h2>
 
@@ -48,15 +49,16 @@ export default function SkillsCard({
               />
             ))
           ) : (
-            <p className="text-sm text-slate-500">
+            <p className="text-xs text-[#8e95a2]">
               No matching skills detected.
             </p>
           )}
         </div>
       </div>
 
+      {/* Missing Skills */}
       <div>
-        <h2 className="mb-4 text-lg font-semibold text-slate-900">
+        <h2 className="mb-4 text-xs font-semibold uppercase tracking-wider text-rose-400">
           ❌ Missing Skills ({missingSkills.length})
         </h2>
 
@@ -70,15 +72,16 @@ export default function SkillsCard({
               />
             ))
           ) : (
-            <p className="text-sm text-slate-500">
+            <p className="text-xs text-[#8e95a2]">
               No missing skills detected.
             </p>
           )}
         </div>
       </div>
 
+      {/* Additional Skills */}
       <div>
-        <h2 className="mb-4 text-lg font-semibold text-slate-900">
+        <h2 className="mb-4 text-xs font-semibold uppercase tracking-wider text-[#8e95a2]">
           ⭐ Additional Skills ({additionalSkills.length})
         </h2>
 
@@ -92,7 +95,7 @@ export default function SkillsCard({
               />
             ))
           ) : (
-            <p className="text-sm text-slate-500">
+            <p className="text-xs text-[#8e95a2]">
               No additional skills found.
             </p>
           )}

@@ -33,30 +33,32 @@ function getScoreClasses(score: number): {
 } {
   if (score >= 85) {
     return {
-      ring: "text-emerald-600",
+      ring: "text-[#99f6e4]",
       badge:
-        "border-emerald-200 bg-emerald-50 text-emerald-700",
+        "border-[#99f6e4]/30 bg-[#99f6e4]/10 text-[#99f6e4]",
     };
   }
 
   if (score >= 70) {
     return {
-      ring: "text-blue-600",
-      badge: "border-blue-200 bg-blue-50 text-blue-700",
+      ring: "text-emerald-400",
+      badge:
+        "border-emerald-500/30 bg-emerald-500/10 text-emerald-400",
     };
   }
 
   if (score >= 50) {
     return {
-      ring: "text-amber-600",
+      ring: "text-amber-400",
       badge:
-        "border-amber-200 bg-amber-50 text-amber-700",
+        "border-amber-500/30 bg-amber-500/10 text-amber-400",
     };
   }
 
   return {
-    ring: "text-red-600",
-    badge: "border-red-200 bg-red-50 text-red-700",
+    ring: "text-rose-400",
+    badge:
+      "border-rose-500/30 bg-rose-500/10 text-rose-400",
   };
 }
 
@@ -70,11 +72,12 @@ export default function AtsScoreCard({
   ).length;
 
   return (
-    <section className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm">
+    <section className="overflow-hidden rounded-[2rem] border border-[#21252d] bg-[#121417] text-white shadow-2xl">
       <div className="grid gap-8 p-6 sm:p-8 lg:grid-cols-[280px_1fr]">
-        <div className="flex flex-col items-center justify-center rounded-[1.75rem] bg-slate-950 px-6 py-10 text-center text-white">
+        {/* Left Circular Score Box */}
+        <div className="flex flex-col items-center justify-center rounded-[1.75rem] border border-[#21252d] bg-[#181b20] px-6 py-10 text-center text-white">
           <div
-            className={`relative flex h-48 w-48 items-center justify-center rounded-full bg-white/10 ${scoreClasses.ring}`}
+            className={`relative flex h-48 w-48 items-center justify-center rounded-full bg-[#090a0f] ${scoreClasses.ring}`}
           >
             <svg
               className="absolute inset-0 h-full w-full -rotate-90"
@@ -88,7 +91,7 @@ export default function AtsScoreCard({
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="8"
-                className="text-white/10"
+                className="text-[#21252d]"
               />
 
               <circle
@@ -108,7 +111,7 @@ export default function AtsScoreCard({
                 {analysis.overallScore}
               </p>
 
-              <p className="mt-1 text-sm font-medium text-white/60">
+              <p className="mt-1 text-sm font-medium text-[#8e95a2]">
                 out of 100
               </p>
             </div>
@@ -125,60 +128,61 @@ export default function AtsScoreCard({
           </p>
         </div>
 
+        {/* Right Analysis Details */}
         <div className="flex flex-col justify-center">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 text-slate-900">
-              <Gauge className="h-5 w-5" />
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#99f6e4] text-[#042f2e]">
+              <Gauge className="h-5 w-5 stroke-[2.2]" />
             </div>
 
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-slate-400">
+              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#99f6e4]">
                 ATS analysis result
               </p>
 
-              <h2 className="mt-1 text-2xl font-semibold text-slate-950">
+              <h2 className="mt-1 text-2xl font-semibold text-white">
                 Resume compatibility score
               </h2>
             </div>
           </div>
 
-          <p className="mt-5 max-w-3xl text-sm leading-7 text-slate-600">
+          <p className="mt-5 max-w-3xl text-sm leading-7 text-[#8e95a2]">
             {analysis.summary}
           </p>
 
           <div className="mt-7 grid gap-4 sm:grid-cols-3">
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
-              <CircleCheckBig className="h-5 w-5 text-emerald-600" />
+            <div className="rounded-3xl border border-[#21252d] bg-[#181b20] p-5">
+              <CircleCheckBig className="h-5 w-5 text-[#99f6e4]" />
 
-              <p className="mt-4 text-2xl font-semibold text-slate-950">
+              <p className="mt-4 text-2xl font-semibold text-white">
                 {passedChecks}
               </p>
 
-              <p className="mt-1 text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
+              <p className="mt-1 text-xs font-medium uppercase tracking-[0.12em] text-[#8e95a2]">
                 Checks passed
               </p>
             </div>
 
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
-              <FileText className="h-5 w-5 text-blue-600" />
+            <div className="rounded-3xl border border-[#21252d] bg-[#181b20] p-5">
+              <FileText className="h-5 w-5 text-[#99f6e4]" />
 
-              <p className="mt-4 text-2xl font-semibold text-slate-950">
+              <p className="mt-4 text-2xl font-semibold text-white">
                 {analysis.wordCount}
               </p>
 
-              <p className="mt-1 text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
+              <p className="mt-1 text-xs font-medium uppercase tracking-[0.12em] text-[#8e95a2]">
                 Resume words
               </p>
             </div>
 
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
-              <Award className="h-5 w-5 text-violet-600" />
+            <div className="rounded-3xl border border-[#21252d] bg-[#181b20] p-5">
+              <Award className="h-5 w-5 text-[#99f6e4]" />
 
-              <p className="mt-4 text-2xl font-semibold text-slate-950">
+              <p className="mt-4 text-2xl font-semibold text-white">
                 {analysis.detectedSkills.length}
               </p>
 
-              <p className="mt-1 text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
+              <p className="mt-1 text-xs font-medium uppercase tracking-[0.12em] text-[#8e95a2]">
                 Skills detected
               </p>
             </div>

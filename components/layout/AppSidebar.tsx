@@ -61,15 +61,15 @@ const navigationItems: NavigationItem[] = [
   },
   {
     label: "AI Assistant",
-    href: "/assistant",
+    href: "/ai-assistant",
     icon: Bot,
-    available: false,
+    available: true,
   },
   {
     label: "Settings",
     href: "/settings",
     icon: Settings,
-    available: false,
+    available: true,
   },
 ];
 
@@ -77,18 +77,18 @@ export default function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="glass-sidebar sticky top-5 hidden h-[calc(100vh-2.5rem)] w-72 shrink-0 overflow-hidden rounded-[2rem] border border-white/20 text-white shadow-[0_24px_80px_rgba(2,12,27,0.35)] lg:flex lg:flex-col">
+    <aside className="sticky top-5 hidden h-[calc(100vh-2.5rem)] w-72 shrink-0 overflow-hidden rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] text-[var(--foreground)] shadow-2xl lg:flex lg:flex-col">
       {/* Brand */}
-      <div className="shrink-0 border-b border-white/10 px-7 py-7">
+      <div className="shrink-0 border-b border-[var(--border)] px-7 py-7">
         <Link
           href="/dashboard"
-          className="block text-lg font-semibold uppercase tracking-[0.18em] text-white transition hover:text-white/85"
+          className="block text-lg font-bold uppercase tracking-[0.18em] text-[var(--foreground)] transition hover:text-[var(--primary)]"
         >
           Career Match
-          <span className="ml-1 text-white/70">AI</span>
+          <span className="ml-1 text-[var(--primary)]">AI</span>
         </Link>
 
-        <p className="mt-3 text-[11px] font-medium uppercase tracking-[0.22em] text-white/55">
+        <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--muted)]">
           AI Career Platform
         </p>
       </div>
@@ -107,17 +107,17 @@ export default function AppSidebar() {
               <div
                 key={item.label}
                 aria-disabled="true"
-                className="flex min-h-14 cursor-not-allowed items-center justify-between rounded-2xl px-4 py-3 text-sm text-white/40"
+                className="flex min-h-14 cursor-not-allowed items-center justify-between rounded-2xl px-4 py-3 text-xs text-[var(--muted)]/60"
               >
                 <div className="flex min-w-0 items-center gap-3">
-                  <Icon className="h-5 w-5 shrink-0" />
+                  <Icon className="h-5 w-5 shrink-0 opacity-50" />
 
                   <span className="truncate uppercase tracking-[0.08em]">
                     {item.label}
                   </span>
                 </div>
 
-                <span className="ml-3 shrink-0 rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-white/45">
+                <span className="ml-3 shrink-0 rounded-full border border-[var(--border)] bg-[var(--surface-soft)] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
                   Soon
                 </span>
               </div>
@@ -129,17 +129,17 @@ export default function AppSidebar() {
               key={item.label}
               href={item.href}
               aria-current={isActive ? "page" : undefined}
-              className={`group flex min-h-14 items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium uppercase tracking-[0.08em] transition duration-200 ${
+              className={`group flex min-h-14 items-center gap-3 rounded-2xl px-4 py-3 text-xs font-semibold uppercase tracking-[0.08em] transition duration-200 ${
                 isActive
-                  ? "border border-white/20 bg-white/20 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22),0_12px_30px_rgba(5,18,38,0.18)] backdrop-blur-xl"
-                  : "border border-transparent text-white/75 hover:-translate-y-0.5 hover:border-white/10 hover:bg-white/10 hover:text-white"
+                  ? "border border-[color-mix(in_srgb,var(--primary)_30%,transparent)] bg-[color-mix(in_srgb,var(--primary)_10%,transparent)] text-[var(--primary)] shadow-lg shadow-[color-mix(in_srgb,var(--primary)_5%,transparent)]"
+                  : "border border-transparent text-[var(--muted)] hover:-translate-y-0.5 hover:border-[var(--border)] hover:bg-[var(--surface-soft)] hover:text-[var(--foreground)]"
               }`}
             >
               <Icon
                 className={`h-5 w-5 shrink-0 transition ${
                   isActive
-                    ? "text-white"
-                    : "text-white/65 group-hover:text-white"
+                    ? "text-[var(--primary)]"
+                    : "text-[var(--muted)] group-hover:text-[var(--foreground)]"
                 }`}
               />
 

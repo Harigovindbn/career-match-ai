@@ -60,10 +60,6 @@ export default async function DashboardPage() {
     redirect("/auth/login");
   }
 
-  /*
-   * maybeSingle() returns null when no profile row exists.
-   * This prevents the dashboard from showing an error for new users.
-   */
   const { data: profileData, error: profileError } = await supabase
     .from("profiles")
     .select(
@@ -126,32 +122,32 @@ export default async function DashboardPage() {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 bg-[#090a0f] text-white min-h-screen">
       {/* Career overview */}
       <section>
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+            <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#99f6e4]">
               <Sparkles className="h-4 w-4" />
               Career overview
             </p>
 
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+            <h2 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Your career workspace
             </h2>
 
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-muted sm:text-base">
+            <p className="mt-3 max-w-2xl text-xs sm:text-sm leading-relaxed text-[#8e95a2]">
               Track your progress, strengthen your profile, and prepare your
               resume for better career opportunities.
             </p>
           </div>
 
-          <div className="rounded-2xl border border-border bg-surface px-4 py-3">
-            <p className="text-xs font-medium uppercase tracking-[0.14em] text-muted">
+          <div className="rounded-2xl border border-[#21252d] bg-[#121417] px-4 py-3 shadow-xl">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#99f6e4]">
               Current focus
             </p>
 
-            <p className="mt-1 text-sm font-semibold text-foreground">
+            <p className="mt-1 text-xs font-semibold text-white">
               Complete your professional profile
             </p>
           </div>
@@ -171,11 +167,11 @@ export default async function DashboardPage() {
       {/* Career readiness */}
       <section>
         <div className="mb-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#99f6e4]">
             Career readiness
           </p>
 
-          <h3 className="mt-2 text-xl font-semibold tracking-tight text-foreground">
+          <h3 className="mt-2 text-xl font-bold tracking-tight text-white">
             Your progress at a glance
           </h3>
         </div>

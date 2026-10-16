@@ -13,20 +13,20 @@ function KeywordBadge({
   importance,
 }: KeywordMatch) {
   const foundStyle =
-    "border-emerald-200 bg-emerald-50 text-emerald-700";
+    "border-[#99f6e4]/30 bg-[#99f6e4]/10 text-[#99f6e4]";
 
   const missingStyle =
-    "border-red-200 bg-red-50 text-red-700";
+    "border-rose-500/30 bg-rose-500/10 text-rose-400";
 
   const importanceStyle = {
-    high: "ring-2 ring-amber-200",
+    high: "ring-2 ring-amber-400/40",
     medium: "",
-    low: "opacity-80",
+    low: "opacity-70",
   };
 
   return (
     <span
-      className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-medium ${
+      className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold ${
         found ? foundStyle : missingStyle
       } ${importanceStyle[importance]}`}
     >
@@ -34,7 +34,7 @@ function KeywordBadge({
       <span>{keyword}</span>
 
       {importance === "high" ? (
-        <span className="text-xs font-semibold uppercase">
+        <span className="text-[10px] font-bold uppercase tracking-wider text-amber-300">
           High
         </span>
       ) : null}
@@ -54,34 +54,34 @@ export default function KeywordCard({
   );
 
   return (
-    <section className="space-y-7 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <section className="space-y-7 rounded-3xl border border-[#21252d] bg-[#121417] p-6 text-white shadow-2xl sm:p-8">
       <div>
         <div className="flex items-center justify-between gap-4">
           <div>
-            <h2 className="text-lg font-semibold text-slate-900">
+            <h2 className="text-lg font-bold text-white">
               Keyword Analysis
             </h2>
 
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-1 text-xs text-[#8e95a2]">
               Keywords detected from the job description.
             </p>
           </div>
 
-          <span className="text-2xl font-bold text-slate-900">
+          <span className="text-2xl font-bold text-[#99f6e4]">
             {safeCoverage}%
           </span>
         </div>
 
-        <div className="mt-4 h-3 overflow-hidden rounded-full bg-slate-100">
+        <div className="mt-4 h-2.5 overflow-hidden rounded-full bg-[#181b20] border border-[#21252d]">
           <div
-            className="h-full rounded-full bg-blue-600 transition-all duration-500"
+            className="h-full rounded-full bg-[#99f6e4] transition-all duration-500 shadow-sm shadow-[#99f6e4]/20"
             style={{ width: `${safeCoverage}%` }}
           />
         </div>
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-500">
+        <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-[#99f6e4]">
           Matching keywords ({matchingKeywords.length})
         </h3>
 
@@ -90,13 +90,13 @@ export default function KeywordCard({
             matchingKeywords.map((keyword) => (
               <span
                 key={keyword}
-                className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-700"
+                className="rounded-full border border-[#99f6e4]/30 bg-[#99f6e4]/10 px-3 py-1 text-xs font-medium text-[#99f6e4]"
               >
                 {keyword}
               </span>
             ))
           ) : (
-            <p className="text-sm text-slate-500">
+            <p className="text-xs text-[#8e95a2]">
               No matching keywords detected.
             </p>
           )}
@@ -104,7 +104,7 @@ export default function KeywordCard({
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-500">
+        <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-rose-400">
           Missing keywords ({missingKeywords.length})
         </h3>
 
@@ -113,13 +113,13 @@ export default function KeywordCard({
             missingKeywords.map((keyword) => (
               <span
                 key={keyword}
-                className="rounded-full border border-red-200 bg-red-50 px-3 py-1 text-sm font-medium text-red-700"
+                className="rounded-full border border-rose-500/30 bg-rose-500/10 px-3 py-1 text-xs font-medium text-rose-400"
               >
                 {keyword}
               </span>
             ))
           ) : (
-            <p className="text-sm text-slate-500">
+            <p className="text-xs text-[#8e95a2]">
               No missing keywords detected.
             </p>
           )}
@@ -127,7 +127,7 @@ export default function KeywordCard({
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-500">
+        <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-[#8e95a2]">
           Detailed keyword results
         </h3>
 
@@ -142,7 +142,7 @@ export default function KeywordCard({
               />
             ))
           ) : (
-            <p className="text-sm text-slate-500">
+            <p className="text-xs text-[#8e95a2]">
               No keyword details available.
             </p>
           )}

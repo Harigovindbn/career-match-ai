@@ -1,90 +1,120 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
-import { login } from "./actions";
+import { Sparkles, ArrowRight, Lock, Mail } from "lucide-react";
 
 export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Your authentication / Supabase login logic here
+  };
+
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-950 px-4 py-12">
-      <div className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-8 shadow-xl">
-        <div className="mb-8 text-center">
-          <Link href="/" className="text-2xl font-bold text-white">
-            CareerMatch<span className="text-blue-500">AI</span>
+    <div className="min-h-screen bg-[#090a0f] flex flex-col justify-center items-center px-4 py-12 text-white">
+      <div className="w-full max-w-md space-y-8">
+        {/* Header Branding */}
+        <div className="text-center space-y-3">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 rounded-full border border-[#21252d] bg-[#121417] px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-[#99f6e4]"
+          >
+            <Sparkles className="h-3.5 w-3.5" />
+            CareerMatch AI
           </Link>
 
-          <h1 className="mt-6 text-3xl font-bold text-white">
+          <h2 className="text-3xl font-bold tracking-tight text-white">
             Welcome back
-          </h1>
-
-          <p className="mt-2 text-sm text-slate-400">
-            Sign in to continue to your career dashboard.
+          </h2>
+          <p className="text-sm text-[#8e95a2]">
+            Sign in to access your dashboard and AI career tools
           </p>
         </div>
 
-        <form action={login} className="space-y-5">
-          <div>
-            <label
-              htmlFor="email"
-              className="mb-2 block text-sm font-medium text-slate-300"
+        {/* Form Card */}
+        <div className="rounded-3xl border border-[#21252d] bg-[#121417] p-8 shadow-2xl">
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Email Field */}
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-xs font-medium uppercase tracking-wider text-[#8e95a2] mb-2"
+              >
+                Email Address
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#8e95a2]">
+                  <Mail className="h-4 w-4" />
+                </div>
+                <input
+                  id="email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  className="w-full rounded-xl border border-[#21252d] bg-[#181b20] pl-10 pr-4 py-3 text-sm text-white placeholder-[#8e95a2]/50 outline-none transition focus:border-[#99f6e4] focus:ring-1 focus:ring-[#99f6e4]"
+                />
+              </div>
+            </div>
+
+            {/* Password Field */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <label
+                  htmlFor="password"
+                  className="block text-xs font-medium uppercase tracking-wider text-[#8e95a2]"
+                >
+                  Password
+                </label>
+                <Link
+                  href="/auth/reset-password"
+                  className="text-xs text-[#99f6e4] hover:underline"
+                >
+                  Forgot password?
+                </Link>
+              </div>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#8e95a2]">
+                  <Lock className="h-4 w-4" />
+                </div>
+                <input
+                  id="password"
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full rounded-xl border border-[#21252d] bg-[#181b20] pl-10 pr-4 py-3 text-sm text-white placeholder-[#8e95a2]/50 outline-none transition focus:border-[#99f6e4] focus:ring-1 focus:ring-[#99f6e4]"
+                />
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#99f6e4] px-5 py-3 text-sm font-semibold text-[#042f2e] transition hover:bg-[#5eead4] shadow-lg shadow-[#99f6e4]/10"
             >
-              Email address
-            </label>
+              Sign In
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </form>
 
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              autoComplete="email"
-              placeholder="you@example.com"
-              className="w-full rounded-lg border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="password"
-              className="mb-2 block text-sm font-medium text-slate-300"
+          {/* Footer Link */}
+          <div className="mt-6 pt-6 border-t border-[#21252d] text-center text-xs text-[#8e95a2]">
+            Don't have an account?{" "}
+            <Link
+              href="/auth/register"
+              className="font-semibold text-[#99f6e4] hover:underline"
             >
-              Password
-            </label>
-
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              autoComplete="current-password"
-              placeholder="Enter your password"
-              className="w-full rounded-lg border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-            />
+              Create an account
+            </Link>
           </div>
-
-          <button
-            type="submit"
-            className="w-full rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900"
-          >
-            Sign in
-          </button>
-        </form>
-
-        <p className="mt-6 text-center text-sm text-slate-400">
-          Don&apos;t have an account?{" "}
-          <Link
-            href="/auth/signup"
-            className="font-semibold text-blue-500 hover:text-blue-400"
-          >
-            Create account
-          </Link>
-        </p>
-
-        <div className="mt-6 text-center">
-          <Link
-            href="/"
-            className="text-sm text-slate-500 transition hover:text-white"
-          >
-            ← Back to home
-          </Link>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

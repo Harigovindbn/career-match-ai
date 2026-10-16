@@ -151,19 +151,19 @@ export default function AppHeader({
 
   return (
     <header
-      className={`sticky top-5 z-40 overflow-hidden rounded-[2rem] border border-white/10 bg-brand-dark text-white transition-[transform,opacity,filter,box-shadow] duration-[1800ms] ease-[cubic-bezier(0.65,0,0.35,1)] will-change-transform ${
+      className={`sticky top-5 z-40 overflow-hidden rounded-[2rem] border border-[#21252d] bg-[#121417] text-white transition-[transform,opacity,filter,box-shadow] duration-[1800ms] ease-[cubic-bezier(0.65,0,0.35,1)] will-change-transform shadow-2xl ${
         isVisible
-          ? "pointer-events-auto translate-y-0 opacity-100 blur-0 shadow-[0_20px_60px_rgba(2,12,27,0.24)]"
+          ? "pointer-events-auto translate-y-0 opacity-100 blur-0"
           : "pointer-events-none -translate-y-[calc(100%+2.5rem)] opacity-0 blur-[2px] shadow-none"
       }`}
     >
       <div className="flex min-h-28 items-center justify-between gap-5 px-6 sm:px-8 lg:px-10">
         <div className="min-w-0">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/60">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#99f6e4]">
             Welcome back
           </p>
 
-          <h1 className="mt-2 truncate text-2xl font-semibold tracking-tight text-white">
+          <h1 className="mt-2 truncate text-2xl font-bold tracking-tight text-white">
             {fullName}
           </h1>
         </div>
@@ -171,18 +171,18 @@ export default function AppHeader({
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <Link
             href="/profile"
-            className="hidden items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-5 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-white/20 sm:flex"
+            className="hidden items-center gap-2 rounded-xl border border-[#21252d] bg-[#181b20] px-5 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-[#8e95a2] transition hover:border-[#99f6e4]/40 hover:bg-[#21252d] hover:text-white sm:flex"
           >
-            <UserRound className="h-4 w-4" />
+            <UserRound className="h-4 w-4 text-[#99f6e4]" />
             View profile
           </Link>
 
           <div className="hidden max-w-48 text-right xl:block">
-            <p className="truncate text-sm font-semibold text-white">
+            <p className="truncate text-sm font-bold text-white">
               {fullName}
             </p>
 
-            <p className="mt-1 truncate text-xs text-white/60">
+            <p className="mt-1 truncate text-xs text-[#8e95a2]">
               {email}
             </p>
           </div>
@@ -190,7 +190,7 @@ export default function AppHeader({
           <Link
             href="/profile"
             aria-label="Open profile"
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/15 text-sm font-bold text-white transition hover:bg-white/25"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#99f6e4]/20 bg-[#99f6e4]/10 text-sm font-bold text-[#99f6e4] transition hover:bg-[#99f6e4]/20"
           >
             {initials}
           </Link>
@@ -198,7 +198,7 @@ export default function AppHeader({
           <form action={logout}>
             <button
               type="submit"
-              className="flex min-h-12 items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-3 py-3 text-xs font-semibold uppercase tracking-[0.1em] text-white transition hover:bg-white/20 sm:px-5"
+              className="flex min-h-12 items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 px-3 py-3 text-xs font-semibold uppercase tracking-[0.1em] text-rose-400 transition hover:bg-rose-500/20 sm:px-5"
             >
               <LogOut className="h-4 w-4" />
 

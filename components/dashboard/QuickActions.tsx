@@ -13,36 +13,32 @@ const actions = [
     description: "Update your personal and professional information.",
     href: "/profile",
     icon: UserRound,
-    available: true,
   },
   {
     title: "Upload Resume",
     description: "Upload your resume for AI-powered ATS analysis.",
-    href: "/resume",
+    href: "/ats-score",
     icon: FileText,
-    available: false,
   },
   {
     title: "Find Job Matches",
     description: "Discover opportunities that fit your professional skills.",
-    href: "/jobs",
+    href: "/job-match",
     icon: BriefcaseBusiness,
-    available: false,
   },
   {
     title: "AI Career Assistant",
     description: "Get personalized career guidance and interview support.",
-    href: "/assistant",
+    href: "/resume-optimizer",
     icon: Bot,
-    available: false,
   },
 ];
 
 export default function QuickActions() {
   return (
-    <section className="rounded-3xl border border-white/10 bg-card-dark p-6 text-white sm:p-7">
+    <section className="rounded-3xl border border-[#21252d] bg-[#121417] p-6 text-white sm:p-7">
       <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/60">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#99f6e4]">
           Shortcuts
         </p>
 
@@ -50,7 +46,7 @@ export default function QuickActions() {
           Quick actions
         </h3>
 
-        <p className="mt-2 text-sm text-white/65">
+        <p className="mt-2 text-sm text-[#8e95a2]">
           Access the most important Career Match AI tools.
         </p>
       </div>
@@ -59,52 +55,26 @@ export default function QuickActions() {
         {actions.map((action) => {
           const Icon = action.icon;
 
-          if (!action.available) {
-            return (
-              <div
-                key={action.title}
-                className="relative cursor-not-allowed rounded-2xl border border-white/10 bg-white/10 p-4 opacity-70"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white">
-                    <Icon className="h-5 w-5" />
-                  </div>
-
-                  <span className="rounded-full border border-white/10 bg-white/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/55">
-                    Soon
-                  </span>
-                </div>
-
-                <p className="mt-4 font-semibold text-white">
-                  {action.title}
-                </p>
-
-                <p className="mt-2 text-sm leading-6 text-white/65">
-                  {action.description}
-                </p>
-              </div>
-            );
-          }
-
           return (
             <Link
               key={action.title}
               href={action.href}
-              className="group rounded-2xl border border-white/10 bg-white/10 p-4 hover:bg-white/15"
+              className="group rounded-2xl border border-[#21252d] bg-[#181b20] p-4 transition hover:border-[#99f6e4]/40 hover:bg-[#21252d]"
             >
               <div className="flex items-start justify-between gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-brand-dark">
-                  <Icon className="h-5 w-5" />
+                {/* High contrast mint pill for clear icon visibility */}
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#99f6e4] text-[#042f2e] shadow-sm">
+                  <Icon className="h-5 w-5 stroke-[2.2]" />
                 </div>
 
-                <ArrowUpRight className="h-5 w-5 text-white/55 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white" />
+                <ArrowUpRight className="h-5 w-5 text-[#8e95a2] transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#99f6e4]" />
               </div>
 
-              <p className="mt-4 font-semibold text-white">
+              <p className="mt-4 font-semibold text-white group-hover:text-[#99f6e4] transition">
                 {action.title}
               </p>
 
-              <p className="mt-2 text-sm leading-6 text-white/65">
+              <p className="mt-2 text-sm leading-6 text-[#8e95a2]">
                 {action.description}
               </p>
             </Link>

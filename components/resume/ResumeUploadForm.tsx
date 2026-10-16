@@ -189,17 +189,17 @@ export default function ResumeUploadForm() {
 
   return (
     <form action={handleFormAction} className="space-y-6">
-      <section className="overflow-hidden rounded-3xl border border-white/10 bg-card-dark text-white">
-        <div className="border-b border-white/10 p-6 sm:p-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/55">
+      <section className="overflow-hidden rounded-3xl border border-[#21252d] bg-[#121417] text-white shadow-2xl">
+        <div className="border-b border-[#21252d] p-6 sm:p-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#99f6e4]">
             Resume management
           </p>
 
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight">
+          <h2 className="mt-2 text-2xl font-bold tracking-tight text-white">
             Upload your resume
           </h2>
 
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-white/65">
+          <p className="mt-2 max-w-2xl text-xs sm:text-sm leading-relaxed text-[#8e95a2]">
             Upload your latest resume so Career Match AI can
             analyse your experience, skills, and job
             suitability.
@@ -213,8 +213,8 @@ export default function ResumeUploadForm() {
             onDrop={handleDrop}
             className={`rounded-3xl border-2 border-dashed p-8 text-center transition sm:p-12 ${
               dragging
-                ? "border-white/50 bg-white/15"
-                : "border-white/15 bg-white/5 hover:border-white/30 hover:bg-white/10"
+                ? "border-[#99f6e4] bg-[#99f6e4]/10"
+                : "border-[#21252d] bg-[#181b20] hover:border-[#99f6e4]/40 hover:bg-[#181b20]/80"
             }`}
           >
             <input
@@ -228,15 +228,15 @@ export default function ResumeUploadForm() {
               className="sr-only"
             />
 
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-3xl bg-white/10">
-              <UploadCloud className="h-8 w-8 text-white" />
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-3xl border border-[#99f6e4]/20 bg-[#99f6e4]/10 text-[#99f6e4]">
+              <UploadCloud className="h-8 w-8 stroke-[2.2]" />
             </div>
 
-            <h3 className="mt-5 text-lg font-semibold">
+            <h3 className="mt-5 text-base font-bold text-white">
               Drag and drop your resume here
             </h3>
 
-            <p className="mt-2 text-sm text-white/55">
+            <p className="mt-2 text-xs text-[#8e95a2]">
               Or select a document from your computer
             </p>
 
@@ -246,28 +246,28 @@ export default function ResumeUploadForm() {
                 fileInputRef.current?.click()
               }
               disabled={pending}
-              className="mt-6 inline-flex min-h-11 items-center justify-center rounded-2xl bg-white px-5 py-2.5 text-sm font-semibold text-brand-dark transition hover:-translate-y-0.5 hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-50"
+              className="mt-6 inline-flex min-h-11 items-center justify-center rounded-xl bg-[#99f6e4] px-5 py-2.5 text-xs font-semibold text-[#042f2e] transition hover:bg-[#5eead4] shadow-lg shadow-[#99f6e4]/10 disabled:cursor-not-allowed disabled:opacity-50"
             >
               Browse files
             </button>
 
-            <p className="mt-5 text-xs text-white/40">
+            <p className="mt-5 text-[11px] text-[#8e95a2]">
               PDF or DOCX only · Maximum file size 5 MB
             </p>
           </div>
 
           {selectedFile && (
-            <div className="mt-6 flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/10 p-4 sm:flex-row sm:items-center">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/10">
-                <FileText className="h-6 w-6 text-white" />
+            <div className="mt-6 flex flex-col gap-4 rounded-2xl border border-[#21252d] bg-[#181b20] p-4 sm:flex-row sm:items-center">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-[#99f6e4]/20 bg-[#99f6e4]/10 text-[#99f6e4]">
+                <FileText className="h-6 w-6" />
               </div>
 
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-semibold text-white">
+                <p className="truncate text-xs font-semibold text-white">
                   {selectedFile.name}
                 </p>
 
-                <p className="mt-1 text-xs text-white/50">
+                <p className="mt-1 text-[11px] text-[#8e95a2]">
                   {formatFileSize(selectedFile.size)}
                 </p>
               </div>
@@ -277,7 +277,7 @@ export default function ResumeUploadForm() {
                 onClick={removeSelectedFile}
                 disabled={pending}
                 aria-label="Remove selected file"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-white/65 transition hover:bg-white/20 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#21252d] bg-[#121417] text-[#8e95a2] transition hover:border-rose-500/30 hover:bg-rose-500/10 hover:text-rose-400 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -288,7 +288,7 @@ export default function ResumeUploadForm() {
             (!state.success && state.message)) && (
             <div
               role="alert"
-              className="mt-6 rounded-2xl border border-red-300/20 bg-red-500/10 px-4 py-3 text-sm text-red-100"
+              className="mt-6 rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-xs font-medium text-rose-400"
             >
               {clientError || state.message}
             </div>
@@ -297,7 +297,7 @@ export default function ResumeUploadForm() {
           {state.success && state.message && (
             <div
               role="status"
-              className="mt-6 flex items-center gap-3 rounded-2xl border border-green-300/20 bg-green-500/10 px-4 py-3 text-sm text-green-100"
+              className="mt-6 flex items-center gap-3 rounded-2xl border border-[#99f6e4]/30 bg-[#99f6e4]/10 px-4 py-3 text-xs font-medium text-[#99f6e4]"
             >
               <CheckCircle2 className="h-5 w-5 shrink-0" />
 
@@ -307,13 +307,13 @@ export default function ResumeUploadForm() {
         </div>
       </section>
 
-      <section className="flex flex-col gap-4 rounded-3xl border border-border bg-surface p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+      <section className="flex flex-col gap-4 rounded-3xl border border-[#21252d] bg-[#121417] p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6 text-white shadow-2xl">
         <div>
-          <p className="font-semibold text-foreground">
+          <p className="text-sm font-bold text-white">
             Ready to upload your resume?
           </p>
 
-          <p className="mt-1 text-sm text-muted">
+          <p className="mt-1 text-xs text-[#8e95a2]">
             Make sure you selected your most recent
             professional resume.
           </p>
@@ -326,7 +326,7 @@ export default function ResumeUploadForm() {
             pending ||
             Boolean(clientError)
           }
-          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-brand-dark px-6 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-brand disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0"
+          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#99f6e4] px-6 py-3 text-xs font-semibold text-[#042f2e] transition hover:bg-[#5eead4] shadow-lg shadow-[#99f6e4]/10 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {pending ? (
             <>

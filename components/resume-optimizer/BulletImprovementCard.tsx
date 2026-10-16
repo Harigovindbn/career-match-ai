@@ -9,21 +9,21 @@ function getStrengthStyles(
 ) {
   if (strength === "strong") {
     return {
-      badge: "border-emerald-200 bg-emerald-50 text-emerald-700",
-      score: "text-emerald-600",
+      badge: "border-[#99f6e4]/30 bg-[#99f6e4]/10 text-[#99f6e4]",
+      score: "text-[#99f6e4]",
     };
   }
 
   if (strength === "moderate") {
     return {
-      badge: "border-amber-200 bg-amber-50 text-amber-700",
-      score: "text-amber-600",
+      badge: "border-amber-500/30 bg-amber-500/10 text-amber-400",
+      score: "text-amber-400",
     };
   }
 
   return {
-    badge: "border-red-200 bg-red-50 text-red-700",
-    score: "text-red-600",
+    badge: "border-rose-500/30 bg-rose-500/10 text-rose-400",
+    score: "text-rose-400",
   };
 }
 
@@ -32,12 +32,12 @@ export default function BulletImprovementCard({
 }: BulletImprovementCardProps) {
   if (bullets.length === 0) {
     return (
-      <section className="rounded-3xl border border-white/40 bg-white/70 p-6 shadow-sm backdrop-blur-xl">
-        <h2 className="text-xl font-semibold text-slate-900">
+      <section className="rounded-3xl border border-[#21252d] bg-[#121417] p-6 text-white shadow-2xl">
+        <h2 className="text-xl font-bold tracking-tight text-white">
           Bullet Improvements
         </h2>
 
-        <p className="mt-3 text-sm leading-6 text-slate-600">
+        <p className="mt-3 text-xs leading-6 text-[#8e95a2]">
           No weak resume bullet points were detected.
         </p>
       </section>
@@ -45,13 +45,13 @@ export default function BulletImprovementCard({
   }
 
   return (
-    <section className="rounded-3xl border border-white/40 bg-white/70 p-6 shadow-sm backdrop-blur-xl">
+    <section className="rounded-3xl border border-[#21252d] bg-[#121417] p-6 text-white shadow-2xl sm:p-8">
       <div>
-        <h2 className="text-xl font-semibold text-slate-900">
+        <h2 className="text-xl font-bold tracking-tight text-white">
           Bullet Improvements
         </h2>
 
-        <p className="mt-2 text-sm leading-6 text-slate-600">
+        <p className="mt-2 text-xs leading-6 text-[#8e95a2]">
           Improve these resume bullet points to make your experience and
           projects stronger.
         </p>
@@ -66,11 +66,11 @@ export default function BulletImprovementCard({
           return (
             <article
               key={`${bullet.original}-${index}`}
-              className="rounded-2xl border border-slate-200 bg-white p-5"
+              className="rounded-2xl border border-[#21252d] bg-[#181b20] p-5 space-y-5"
             >
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <span
-                  className={`rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wide ${styles.badge}`}
+                  className={`rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-wider ${styles.badge}`}
                 >
                   {bullet.strength}
                 </span>
@@ -82,29 +82,32 @@ export default function BulletImprovementCard({
                 </span>
               </div>
 
-              <div className="mt-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+              {/* Original Bullet */}
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-[#8e95a2]">
                   Original
                 </p>
 
-                <p className="mt-2 text-sm leading-6 text-slate-700">
+                <p className="mt-2 text-xs leading-6 text-white/80">
                   {bullet.original}
                 </p>
               </div>
 
-              <div className="mt-5 rounded-2xl border border-emerald-100 bg-emerald-50/70 p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-emerald-700">
+              {/* Suggested Improvement */}
+              <div className="rounded-2xl border border-[#99f6e4]/30 bg-[#99f6e4]/10 p-4">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-[#99f6e4]">
                   Suggested Improvement
                 </p>
 
-                <p className="mt-2 text-sm font-medium leading-6 text-slate-800">
+                <p className="mt-2 text-xs font-medium leading-6 text-white">
                   {bullet.improved}
                 </p>
               </div>
 
+              {/* Why Improve It? */}
               {bullet.issues.length > 0 ? (
-                <div className="mt-5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-[#8e95a2]">
                     Why improve it?
                   </p>
 
@@ -113,9 +116,9 @@ export default function BulletImprovementCard({
                       (issue, issueIndex) => (
                         <li
                           key={`${issue}-${issueIndex}`}
-                          className="flex gap-2 text-sm leading-6 text-slate-600"
+                          className="flex gap-2 text-xs leading-6 text-[#8e95a2]"
                         >
-                          <span className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400" />
+                          <span className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#99f6e4]" />
 
                           <span>{issue}</span>
                         </li>

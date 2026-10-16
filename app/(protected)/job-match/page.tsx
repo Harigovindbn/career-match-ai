@@ -66,28 +66,28 @@ export default function JobMatchPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 bg-[var(--background)] text-[var(--foreground)] min-h-screen">
       {/* Page heading */}
       <section>
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+            <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--primary)]">
               <Sparkles className="h-4 w-4" />
               Career Match AI
             </p>
 
-            <h1 className="mt-3 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+            <h1 className="mt-3 text-3xl font-bold tracking-tight text-[var(--foreground)] sm:text-4xl">
               Job Match Analysis
             </h1>
 
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-muted sm:text-base">
+            <p className="mt-3 max-w-2xl text-xs sm:text-sm leading-relaxed text-[var(--muted)]">
               Compare your resume with a job description to discover
               matching skills, missing keywords, strengths, and areas
               to improve.
             </p>
           </div>
 
-          <div className="inline-flex w-fit items-center gap-2 rounded-2xl border border-border bg-surface px-4 py-3 text-sm font-medium text-muted">
+          <div className="inline-flex w-fit items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-xs font-semibold text-[var(--primary)] shadow-xl">
             <BriefcaseBusiness className="h-4 w-4" />
             Free local analysis
           </div>
@@ -95,21 +95,21 @@ export default function JobMatchPage() {
       </section>
 
       {/* Hero */}
-      <section className="relative overflow-hidden rounded-3xl bg-brand-dark p-7 text-white sm:p-8">
-        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/5" />
-        <div className="absolute -bottom-24 right-20 h-52 w-52 rounded-full bg-white/5" />
+      <section className="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-7 text-[var(--foreground)] shadow-2xl sm:p-8">
+        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[color-mix(in_srgb,var(--primary)_5%,transparent)]" />
+        <div className="absolute -bottom-24 right-20 h-52 w-52 rounded-full bg-[color-mix(in_srgb,var(--primary)_5%,transparent)]" />
 
         <div className="relative grid gap-8 lg:grid-cols-[minmax(0,1.5fr)_minmax(280px,0.7fr)] lg:items-center">
           <div>
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[color-mix(in_srgb,var(--primary)_20%,transparent)] bg-[color-mix(in_srgb,var(--primary)_10%,transparent)] text-[var(--primary)]">
               <Target className="h-6 w-6" />
             </div>
 
-            <h2 className="mt-6 text-3xl font-semibold tracking-tight sm:text-4xl">
+            <h2 className="mt-6 text-3xl font-bold tracking-tight text-[var(--foreground)] sm:text-4xl">
               Check how well your resume matches a job
             </h2>
 
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-white/70 sm:text-base">
+            <p className="mt-4 max-w-2xl text-xs sm:text-sm leading-relaxed text-[var(--muted)]">
               Paste your resume and the complete job description.
               Career Match AI will analyse relevant skills, keywords,
               experience requirements, education requirements, and
@@ -118,26 +118,26 @@ export default function JobMatchPage() {
           </div>
 
           <div className="grid gap-3">
-            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/10 px-4 py-3">
-              <CheckCircle2 className="h-5 w-5 shrink-0" />
+            <div className="flex items-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)] px-4 py-3">
+              <CheckCircle2 className="h-5 w-5 shrink-0 text-[var(--primary)]" />
 
-              <span className="text-sm text-white/80">
+              <span className="text-xs font-medium text-[var(--foreground)]/80">
                 No paid AI API required
               </span>
             </div>
 
-            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/10 px-4 py-3">
-              <CheckCircle2 className="h-5 w-5 shrink-0" />
+            <div className="flex items-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)] px-4 py-3">
+              <CheckCircle2 className="h-5 w-5 shrink-0 text-[var(--primary)]" />
 
-              <span className="text-sm text-white/80">
+              <span className="text-xs font-medium text-[var(--foreground)]/80">
                 Instant skill comparison
               </span>
             </div>
 
-            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/10 px-4 py-3">
-              <CheckCircle2 className="h-5 w-5 shrink-0" />
+            <div className="flex items-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)] px-4 py-3">
+              <CheckCircle2 className="h-5 w-5 shrink-0 text-[var(--primary)]" />
 
-              <span className="text-sm text-white/80">
+              <span className="text-xs font-medium text-[var(--foreground)]/80">
                 Personalised recommendations
               </span>
             </div>
@@ -155,7 +155,7 @@ export default function JobMatchPage() {
         {analysisError ? (
           <div
             role="alert"
-            className="mt-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+            className="mt-4 rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-xs font-medium text-rose-400"
           >
             {analysisError}
           </div>
@@ -164,16 +164,16 @@ export default function JobMatchPage() {
 
       {/* Empty state */}
       {!analysis ? (
-        <section className="rounded-3xl border border-dashed border-border bg-surface p-8 text-center sm:p-12">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+        <section className="rounded-3xl border border-dashed border-[var(--border)] bg-[var(--surface)] p-8 text-center sm:p-12 shadow-2xl">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[color-mix(in_srgb,var(--primary)_20%,transparent)] bg-[color-mix(in_srgb,var(--primary)_10%,transparent)] text-[var(--primary)]">
             <BriefcaseBusiness className="h-7 w-7" />
           </div>
 
-          <h2 className="mt-5 text-xl font-semibold text-foreground">
+          <h2 className="mt-5 text-xl font-bold text-[var(--foreground)]">
             Your job-match results will appear here
           </h2>
 
-          <p className="mx-auto mt-2 max-w-xl text-sm leading-6 text-muted">
+          <p className="mx-auto mt-2 max-w-xl text-xs leading-relaxed text-[var(--muted)]">
             Enter your resume text and a complete job description,
             then select Analyse Match.
           </p>
@@ -188,11 +188,11 @@ export default function JobMatchPage() {
         >
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">
                 Analysis complete
               </p>
 
-              <h2 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
+              <h2 className="mt-2 text-2xl font-bold tracking-tight text-[var(--foreground)]">
                 {analysis.detectedJobTitle}
               </h2>
             </div>
@@ -200,7 +200,7 @@ export default function JobMatchPage() {
             <button
               type="button"
               onClick={handleClearResults}
-              className="w-fit rounded-xl border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-foreground transition hover:bg-slate-100"
+              className="w-fit rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 text-xs font-semibold text-[var(--muted)] transition hover:border-[color-mix(in_srgb,var(--primary)_40%,transparent)] hover:bg-[var(--surface-soft)] hover:text-[var(--foreground)] shadow-xl"
             >
               Clear results
             </button>
@@ -237,36 +237,36 @@ export default function JobMatchPage() {
 
           {/* Detected requirements */}
           <section className="grid gap-5 lg:grid-cols-2">
-            <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <article className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-2xl">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-700">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[color-mix(in_srgb,var(--primary)_20%,transparent)] bg-[color-mix(in_srgb,var(--primary)_10%,transparent)] text-[var(--primary)]">
                   <BriefcaseBusiness className="h-5 w-5" />
                 </div>
 
                 <div>
-                  <p className="text-sm font-medium text-slate-500">
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-[var(--muted)]">
                     Detected experience requirement
                   </p>
 
-                  <p className="mt-1 font-semibold text-slate-900">
+                  <p className="mt-1 text-xs font-bold text-[var(--foreground)]">
                     {analysis.detectedExperienceRequirement}
                   </p>
                 </div>
               </div>
             </article>
 
-            <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <article className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-2xl">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-50 text-violet-700">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[color-mix(in_srgb,var(--primary)_20%,transparent)] bg-[color-mix(in_srgb,var(--primary)_10%,transparent)] text-[var(--primary)]">
                   <GraduationCap className="h-5 w-5" />
                 </div>
 
                 <div>
-                  <p className="text-sm font-medium text-slate-500">
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-[var(--muted)]">
                     Detected education requirement
                   </p>
 
-                  <p className="mt-1 font-semibold text-slate-900">
+                  <p className="mt-1 text-xs font-bold text-[var(--foreground)]">
                     {analysis.detectedEducationRequirement}
                   </p>
                 </div>
@@ -327,20 +327,20 @@ function CoverageCard({
   );
 
   return (
-    <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <article className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-2xl">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-sm font-medium text-slate-600">
+        <p className="text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">
           {label}
         </p>
 
-        <span className="text-xl font-bold text-slate-900">
+        <span className="text-xl font-bold text-[var(--foreground)]">
           {safeScore}%
         </span>
       </div>
 
-      <div className="mt-4 h-2.5 overflow-hidden rounded-full bg-slate-100">
+      <div className="mt-4 h-2.5 overflow-hidden rounded-full border border-[var(--border)] bg-[var(--surface-soft)]">
         <div
-          className="h-full rounded-full bg-slate-900 transition-all duration-500"
+          className="h-full rounded-full bg-[var(--primary)] transition-all duration-500 shadow-sm"
           style={{ width: `${safeScore}%` }}
         />
       </div>
@@ -365,14 +365,14 @@ function ListCard({
 }: ListCardProps) {
   const iconStyles =
     variant === "strength"
-      ? "bg-emerald-50 text-emerald-700"
-      : "bg-amber-50 text-amber-700";
+      ? "border-[color-mix(in_srgb,var(--primary)_20%,transparent)] bg-[color-mix(in_srgb,var(--primary)_10%,transparent)] text-[var(--primary)]"
+      : "border-amber-500/20 bg-amber-500/10 text-amber-400";
 
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <section className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-2xl">
       <div className="flex items-start gap-3">
         <div
-          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${iconStyles}`}
+          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${iconStyles}`}
         >
           {variant === "strength" ? (
             <CheckCircle2 className="h-5 w-5" />
@@ -382,11 +382,11 @@ function ListCard({
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-slate-900">
+          <h2 className="text-lg font-bold text-[var(--foreground)]">
             {title}
           </h2>
 
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-xs text-[var(--muted)]">
             {description}
           </p>
         </div>
@@ -397,19 +397,19 @@ function ListCard({
           items.map((item, index) => (
             <div
               key={`${item}-${index}`}
-              className="flex items-start gap-3 rounded-xl bg-slate-50 px-4 py-3"
+              className="flex items-start gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)] px-4 py-3"
             >
-              <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white text-xs font-semibold text-slate-700 shadow-sm">
+              <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] text-xs font-semibold text-[var(--primary)]">
                 {index + 1}
               </span>
 
-              <p className="text-sm leading-6 text-slate-700">
+              <p className="text-xs leading-relaxed text-[var(--muted)]">
                 {item}
               </p>
             </div>
           ))
         ) : (
-          <p className="text-sm text-slate-500">
+          <p className="text-xs text-[var(--muted)]">
             {emptyMessage}
           </p>
         )}

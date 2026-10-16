@@ -1,67 +1,55 @@
 @import "tailwindcss";
 
 :root {
-  /* Ultra-Dark Modern Aesthetic */
-  --background: #080808;
-  --background-secondary: #121212;
+  /* Matte Obsidian Palette (Default Dark) */
+  --background: #090a0f;
   --foreground: #f4f4f5;
 
-  --surface: #121212;
-  --surface-soft: #18181b;
-  --surface-strong: #27272a;
+  --surface: #121417;
+  --surface-soft: #181b20;
+  --surface-strong: #21252d;
 
-  --sidebar: #0f0f11;
-  --sidebar-hover: #18181b;
-  --sidebar-active: #27272a;
+  --sidebar: #0d0f12;
 
-  --primary: #ffffff;
-  --primary-hover: #e4e4e7;
+  /* Teal / Mint Highlights */
+  --primary: #99f6e4;
+  --primary-hover: #5eead4;
+  --primary-text: #042f2e;
 
-  --brand: #ffffff;
-  --brand-light: #f4f4f5;
-  --brand-dark: #a1a1aa;
-
-  --card-dark: #121212;
-  --card-dark-hover: #18181b;
-
-  --muted: #a1a1aa;
-  --border: #27272a;
-
-  --success: #34d399;
-  --warning: #fbbf24;
-  --danger: #f87171;
-
-  --glass-fill: rgba(24, 24, 27, 0.7);
-  --glass-fill-soft: rgba(18, 18, 18, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-border-strong: rgba(255, 255, 255, 0.2);
-  --glass-highlight: rgba(255, 255, 255, 0.15);
-  --glass-shadow: rgba(0, 0, 0, 0.8);
+  --muted: #8e95a2;
+  --border: #21252d;
 }
 
-@theme inline {
+/* Light Theme overrides when the .light class is active on <html> */
+.light {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+
+  --surface: #ffffff;
+  --surface-soft: #f1f5f9;
+  --surface-strong: #e2e8f0;
+
+  --sidebar: #ffffff;
+
+  --primary: #0d9488;
+  --primary-hover: #0f766e;
+  --primary-text: #ffffff;
+
+  --muted: #64748b;
+  --border: #cbd5e1;
+}
+
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
   --color-surface-soft: var(--surface-soft);
   --color-surface-strong: var(--surface-strong);
   --color-sidebar: var(--sidebar);
-  --color-sidebar-hover: var(--sidebar-hover);
-  --color-sidebar-active: var(--sidebar-active);
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
-  --color-brand: var(--brand);
-  --color-brand-light: var(--brand-light);
-  --color-brand-dark: var(--brand-dark);
-  --color-card-dark: var(--card-dark);
-  --color-card-dark-hover: var(--card-dark-hover);
   --color-muted: var(--muted);
   --color-border: var(--border);
-  --color-success: var(--success);
-  --color-warning: var(--warning);
-  --color-danger: var(--danger);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 * {
@@ -77,100 +65,31 @@ body {
   margin: 0;
   overflow-x: hidden;
   color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
-  background-color: #080808;
-  background-image:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(255, 255, 255, 0.05),
-      transparent 40%
-    );
-  background-attachment: fixed;
+  background-color: var(--background);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
-/* Subtle grid pattern background */
-body::after {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  content: "";
-  background:
-    linear-gradient(
-      rgba(255, 255, 255, 0.03) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.03) 1px,
-      transparent 1px
-    );
-  background-size: 60px 60px;
-  mask-image: radial-gradient(circle at 50% 30%, black, transparent 80%);
-}
-
-button,
-a,
-input,
-textarea,
-select {
-  transition:
-    background-color 180ms ease,
-    border-color 180ms ease,
-    color 180ms ease,
-    box-shadow 180ms ease,
-    opacity 180ms ease,
-    transform 180ms ease;
-}
-
-button {
-  cursor: pointer;
-}
-
-button:disabled {
-  cursor: not-allowed;
-}
-
-input,
-textarea,
-select {
+/* Glass & Card Classes using dynamic variables */
+.glass-card {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background-color: var(--surface);
   color: var(--foreground);
 }
 
-input::placeholder,
-textarea::placeholder {
-  color: #71717a;
-}
-
-::selection {
-  color: #000000;
-  background: #ffffff;
-}
-
-/* Sleek dark cards */
-.glass,
-.glass-soft,
-.glass-header,
-.glass-sidebar {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-}
-
-.glass {
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  background: #121212;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-}
-
-.glass-soft {
-  border: 1px solid #27272a;
+.glass-card-accent {
+  border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent);
   border-radius: 20px;
-  background: #18181b;
+  background-color: var(--primary);
+  color: var(--primary-text);
 }
 
-.glass-header {
-  border-bottom: 1px solid #27272a;
-  background: rgba(8, 8, 8, 0.8);
-  backdrop-filter:
+.mint-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 12px;
+  background-color: var(--primary);
+  padding: 6px 12px;
+  font-weight: 600;
+  color: var(--primary-text);
+}
