@@ -96,7 +96,7 @@ export default function LoginPage() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#99f6e4] px-5 py-3 text-sm font-semibold text-[#042f2e] transition hover:bg-[#5eead4] shadow-lg shadow-[#99f6e4]/10"
+              className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#99f6e4] px-5 py-3 text-sm font-semibold text-[#042f2e] transition hover:bg-[#5eead4] shadow-lg shadow-[#99f6e4]/15 cursor-pointer"
             >
               Sign In
               <ArrowRight className="h-4 w-4" />
@@ -107,7 +107,7 @@ export default function LoginPage() {
           <div className="mt-6 pt-6 border-t border-[#21252d] text-center text-xs text-[#8e95a2]">
             Don't have an account?{" "}
             <Link
-              href="/auth/register"
+              href="/auth/sign-up"
               className="font-semibold text-[#99f6e4] hover:underline"
             >
               Create an account
