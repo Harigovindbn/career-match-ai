@@ -276,6 +276,7 @@ export async function getAIBulletSuggestions(
         original: bullet,
         improved: `Spearheaded initiatives for ${bullet.toLowerCase()}, driving a 30% performance boost and ensuring complete cross-functional alignment.`,
         reason: "Enhanced with action-oriented vocabulary, measurable impact metrics, and tailored target keywords.",
+        explanation: "Enhanced with action-oriented vocabulary, measurable impact metrics, and tailored target keywords.",
       }));
 
       return {
@@ -295,6 +296,7 @@ export async function getAIBulletSuggestions(
       original: bullet,
       improved: `Engineered solutions for ${bullet.toLowerCase()}, elevating efficiency and accelerating deployment velocity.`,
       reason: "Optimized automatically for high-impact technical positioning.",
+      explanation: "Optimized automatically for high-impact technical positioning.",
     }));
 
     return {
