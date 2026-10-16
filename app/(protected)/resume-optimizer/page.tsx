@@ -1,260 +1,225 @@
-import Link from "next/link";
-import { FileText, Sparkles } from "lucide-react";
-import { redirect } from "next/navigation";
+'use client';
 
-import OptimizerWorkspace from "@/components/resume-optimizer/OptimizerWorkspace";
-import OptimizationHistory, {
-  type OptimizationHistoryItem,
-} from "@/components/resume-optimizer/OptimizationHistory";
-import { createClient } from "@/lib/supabase/server";
+import { useState, useEffect, useCallback } from 'react';
+import OptimizerWorkspace from '@/components/resume-optimizer/OptimizerWorkspace';
+import {
+  getResumeOptimizations,
+  deleteResumeOptimization,
+  OptimizationRecord,
+} from './actions';
+import {
+  History,
+  Trash2,
+  Calendar,
+  Sparkles,
+  Loader2,
+  FileText,
+} from 'lucide-react';
 
-type ResumeRecord = {
-  id: string;
-  file_name: string;
-  ats_score: number | null;
-  extracted_text: string | null;
-  skills: unknown;
-  created_at: string;
-};
+export default function ResumeOptimizerPage() {
+  const [history, setHistory] = useState<OptimizationRecord[]>([]);
+  const [loadingHistory, setLoadingHistory] = useState(true);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'optimizer' | 'history'>('optimizer');
 
-function parseSkills(value: unknown): string[] {
-  if (!value) {
-    return [];
-  }
-
-  if (Array.isArray(value)) {
-    return value
-      .filter(
-        (item): item is string =>
-          typeof item === "string",
-      )
-      .map((item) => item.trim())
-      .filter(Boolean);
-  }
-
-  if (typeof value === "string") {
+  const fetchHistory = useCallback(async () => {
     try {
-      const parsed: unknown =
-        JSON.parse(value);
-
-      if (Array.isArray(parsed)) {
-        return parsed
-          .filter(
-            (item): item is string =>
-              typeof item === "string",
-          )
-          .map((item) => item.trim())
-          .filter(Boolean);
+      const result = await getResumeOptimizations();
+      if (result.success && result.data) {
+        setHistory(result.data);
       }
-    } catch {
-      return value
-        .replace(/^\{|\}$/g, "")
-        .split(/,|\n|;/)
-        .map((item) =>
-          item
-            .replace(/^"|"$/g, "")
-            .trim(),
-        )
-        .filter(Boolean);
+    } catch (err) {
+      console.error('Failed to load history:', err);
+    } finally {
+      setLoadingHistory(false);
     }
-  }
+  }, []);
 
-  return [];
-}
+  useEffect(() => {
+    let isMounted = true;
 
-export default async function ResumeOptimizerPage() {
-  const supabase = await createClient();
+    async function loadData() {
+      try {
+        const result = await getResumeOptimizations();
+        if (isMounted && result.success && result.data) {
+          setHistory(result.data);
+        }
+      } catch (err) {
+        console.error('Failed to load history:', err);
+      } finally {
+        if (isMounted) {
+          setLoadingHistory(false);
+        }
+      }
+    }
 
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
+    loadData();
 
-  if (userError || !user) {
-    redirect("/auth/login");
-  }
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
-  const {
-    data: resumeRows,
-    error: resumeError,
-  } = await supabase
-    .from("resumes")
-    .select(
-      "id, file_name, ats_score, extracted_text, skills, created_at",
-    )
-    .eq("user_id", user.id)
-    .order("created_at", {
-      ascending: false,
-    })
-    .limit(1);
-
-  const latestResume =
-    !resumeError &&
-    resumeRows &&
-    resumeRows.length > 0
-      ? (resumeRows[0] as ResumeRecord)
-      : null;
-
-  if (resumeError) {
-    console.warn(
-      "Could not load resume for optimizer:",
-      resumeError.message ||
-        "Unknown Supabase query error",
-    );
-  }
-
-  const resumeText =
-    latestResume?.extracted_text?.trim() ?? "";
-
-  const storedSkills = parseSkills(
-    latestResume?.skills,
-  );
-
-  const atsScore =
-    latestResume?.ats_score ?? null;
-
-  const { data: historyRows, error: historyError } =
-    await supabase
-      .from("resume_optimizations")
-      .select(
-        `id, job_description, original_text, optimized_text, match_score, replacements_applied, matching_skills, missing_skills, matching_keywords, missing_keywords, created_at`,
-      )
-      .eq("user_id", user.id)
-      .order("created_at", {
-        ascending: false,
-      })
-      .limit(30);
-
-  if (historyError) {
-    console.warn(
-      "Could not load optimization history:",
-      historyError.message,
-    );
-  }
-
-  const optimizationHistory: OptimizationHistoryItem[] =
-    (historyRows ?? []).map((row) => ({
-      id: row.id,
-      job_description: row.job_description ?? "",
-      original_text: row.original_text ?? "",
-      optimized_text: row.optimized_text ?? "",
-      match_score:
-        typeof row.match_score === "number"
-          ? row.match_score
-          : null,
-      replacements_applied:
-        typeof row.replacements_applied === "number"
-          ? row.replacements_applied
-          : null,
-      matching_skills: Array.isArray(row.matching_skills)
-        ? row.matching_skills
-        : [],
-      missing_skills: Array.isArray(row.missing_skills)
-        ? row.missing_skills
-        : [],
-      matching_keywords: Array.isArray(
-        row.matching_keywords,
-      )
-        ? row.matching_keywords
-        : [],
-      missing_keywords: Array.isArray(
-        row.missing_keywords,
-      )
-        ? row.missing_keywords
-        : [],
-      created_at: row.created_at ?? "",
-    }));
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this saved optimization?')) return;
+    setDeletingId(id);
+    const result = await deleteResumeOptimization(id);
+    if (result.success) {
+      setHistory((prev) => prev.filter((item) => item.id !== id));
+    } else {
+      alert(result.message);
+    }
+    setDeletingId(null);
+  };
 
   return (
-    <div className="space-y-8">
-      {resumeError ? (
-        <div
-          role="alert"
-          className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700"
-        >
-          We could not load your saved resume. You can
-          still paste your resume manually into the
-          optimizer.
-        </div>
-      ) : null}
-
-      {!resumeError &&
-      latestResume &&
-      !resumeText ? (
-        <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5">
-          <div className="flex items-start gap-3">
-            <Sparkles className="mt-0.5 h-5 w-5 shrink-0 text-amber-700" />
-
-            <div>
-              <p className="font-semibold text-amber-900">
-                Resume text is not available yet
-              </p>
-
-              <p className="mt-1 text-sm leading-6 text-amber-800">
-                Your resume exists, but no extracted text
-                was found. You can paste your resume
-                manually below or analyse it from the
-                Resume page first.
-              </p>
-
-              <Link
-                href="/resume"
-                className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-amber-900 underline underline-offset-4"
-              >
-                <FileText className="h-4 w-4" />
-                Open Resume
-              </Link>
-            </div>
-          </div>
-        </div>
-      ) : null}
-
-      {!resumeError && !latestResume ? (
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex items-start gap-3">
-            <FileText className="mt-0.5 h-5 w-5 shrink-0 text-slate-700" />
-
-            <div>
-              <p className="font-semibold text-slate-950">
-                No saved resume found
-              </p>
-
-              <p className="mt-1 text-sm leading-6 text-slate-600">
-                You can paste your resume manually into
-                the optimizer or upload one to your
-                account first.
-              </p>
-
-              <Link
-                href="/resume"
-                className="mt-3 inline-flex text-sm font-semibold text-slate-900 underline underline-offset-4"
-              >
-                Upload Resume
-              </Link>
-            </div>
-          </div>
-        </div>
-      ) : null}
-
-      <OptimizerWorkspace
-        resumeId={latestResume?.id ?? null}
-        initialResumeText={resumeText}
-        storedSkills={storedSkills}
-        atsScore={atsScore}
-      />
-
-      <section className="space-y-4 pt-6">
+    <div className="container mx-auto px-4 py-8 max-w-7xl space-y-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-5">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-foreground">
-            Optimization History
-          </h2>
-          <p className="mt-1 text-sm text-muted">
-            Review past optimizations, compare match scores, and access improved resumes.
+          <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            Resume Optimizer
+          </h1>
+          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+            Tailor your resume to target job descriptions, increase keyword match scores, and track your optimization history.
           </p>
         </div>
 
-        <OptimizationHistory items={optimizationHistory} />
-      </section>
+        <div className="flex bg-zinc-100 dark:bg-zinc-800 p-1 rounded-xl w-fit">
+          <button
+            onClick={() => setActiveTab('optimizer')}
+            className={`flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-lg transition ${
+              activeTab === 'optimizer'
+                ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-sm'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            Optimizer
+          </button>
+          <button
+            onClick={() => {
+              setActiveTab('history');
+              setLoadingHistory(true);
+              fetchHistory();
+            }}
+            className={`flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-lg transition ${
+              activeTab === 'history'
+                ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-sm'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
+            }`}
+          >
+            <History className="w-3.5 h-3.5" />
+            Saved History ({history.length})
+          </button>
+        </div>
+      </div>
+
+      {activeTab === 'optimizer' ? (
+        <OptimizerWorkspace />
+      ) : (
+        <div className="space-y-4">
+          {loadingHistory ? (
+            <div className="flex flex-col items-center justify-center p-12 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800">
+              <Loader2 className="w-8 h-8 animate-spin text-blue-600 mb-3" />
+              <p className="text-sm text-zinc-500 dark:text-zinc-400">Loading saved optimizations...</p>
+            </div>
+          ) : history.length === 0 ? (
+            <div className="p-12 text-center bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800">
+              <FileText className="w-10 h-10 text-zinc-400 mx-auto mb-3" />
+              <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
+                No Saved Optimizations
+              </h3>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4">
+                You haven&apos;t saved any optimized resumes yet. Run an optimization to get started.
+              </p>
+              <button
+                onClick={() => setActiveTab('optimizer')}
+                className="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+              >
+                Go to Optimizer
+              </button>
+            </div>
+          ) : (
+            <div className="grid gap-4">
+              {history.map((record) => (
+                <div
+                  key={record.id}
+                  className="p-5 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 space-y-4"
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-100 dark:border-zinc-800 pb-3">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                          Optimization Run
+                        </span>
+                        <span className="text-xs px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
+                          {record.match_score}% Match Score
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-3.5 h-3.5" />
+                          {new Date(record.created_at).toLocaleDateString()}
+                        </span>
+                        <span>•</span>
+                        <span>{record.replacements_applied} Keywords Applied</span>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => handleDelete(record.id)}
+                      disabled={deletingId === record.id}
+                      className="inline-flex items-center gap-1.5 text-xs text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 px-3 py-1.5 rounded-lg border border-red-200 dark:border-red-900/40 transition w-fit"
+                    >
+                      {deletingId === record.id ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      ) : (
+                        <Trash2 className="w-3.5 h-3.5" />
+                      )}
+                      Delete
+                    </button>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-4 text-xs">
+                    <div className="space-y-1">
+                      <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Matching Skills ({record.matching_skills?.length || 0})
+                      </span>
+                      <div className="flex flex-wrap gap-1">
+                        {record.matching_skills?.map((skill, i) => (
+                          <span
+                            key={i}
+                            className="px-2 py-0.5 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 rounded border border-emerald-200 dark:border-emerald-900/40"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Missing Skills ({record.missing_skills?.length || 0})
+                      </span>
+                      <div className="flex flex-wrap gap-1">
+                        {record.missing_skills?.map((skill, i) => (
+                          <span
+                            key={i}
+                            className="px-2 py-0.5 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 rounded border border-amber-200 dark:border-amber-900/40"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

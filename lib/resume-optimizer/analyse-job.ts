@@ -15,6 +15,32 @@ import type {
   ResumeOptimizerResult,
 } from "@/lib/resume-optimizer/types";
 
+/**
+  Separates squished CamelCase strings (e.g. "ServiceManagement" -> "Service Management")
+  and normalizes keyword arrays so they display cleanly in badges and preview lists.
+ */
+function cleanKeywordList(keywords: string[]): string[] {
+  if (!Array.isArray(keywords)) return [];
+
+  const cleanedSet = new Set<string>();
+
+  for (const item of keywords) {
+    if (!item) continue;
+
+    // Split CamelCase words jammed together without spaces
+    const separated = item.replace(/([a-z])([A-Z])/g, "$1 $2");
+
+    // Replace multiple spaces or non-standard spaces with a single space
+    const normalized = separated.replace(/\s+/g, " ").trim();
+
+    if (normalized.length > 1) {
+      cleanedSet.add(normalized);
+    }
+  }
+
+  return Array.from(cleanedSet);
+}
+
 function clampScore(value: number): number {
   return Math.max(0, Math.min(100, Math.round(value)));
 }
@@ -287,14 +313,28 @@ export function analyseResumeAgainstJob(
     input.storedSkills ?? [],
   );
 
+  // Clean and separate any squished CamelCase keywords
+  const cleanMatchingKeywords = cleanKeywordList(
+    keywordComparison.matchingKeywords,
+  );
+  const cleanMissingKeywords = cleanKeywordList(
+    keywordComparison.missingKeywords,
+  );
+
   const keywordMatch = calculatePercentage(
-    keywordComparison.matchingKeywords.length,
-    keywordComparison.matchingKeywords.length +
-      keywordComparison.missingKeywords.length,
+    cleanMatchingKeywords.length,
+    cleanMatchingKeywords.length + cleanMissingKeywords.length,
+  );
+
+  const cleanMatchingSkills = cleanKeywordList(
+    skillComparison.matchingSkills,
+  );
+  const cleanMissingSkills = cleanKeywordList(
+    skillComparison.missingSkills,
   );
 
   const skillMatch = calculatePercentage(
-    skillComparison.matchingSkills.length,
+    cleanMatchingSkills.length,
     skillComparison.requiredSkills.length,
     keywordMatch,
   );
@@ -330,12 +370,9 @@ export function analyseResumeAgainstJob(
 
   const suggestions = createSuggestions({
     overallScore,
-    missingKeywords:
-      keywordComparison.missingKeywords,
-    missingSkills:
-      skillComparison.missingSkills,
-    matchingSkills:
-      skillComparison.matchingSkills,
+    missingKeywords: cleanMissingKeywords,
+    missingSkills: cleanMissingSkills,
+    matchingSkills: cleanMatchingSkills,
     resumeText,
     jobDescription,
     weakBulletCount: weakBullets.length,
@@ -345,23 +382,14 @@ export function analyseResumeAgainstJob(
     overallScore,
     scoreLabel: getScoreLabel(overallScore),
 
-    matchingKeywords:
-      keywordComparison.matchingKeywords,
+    matchingKeywords: cleanMatchingKeywords,
+    missingKeywords: cleanMissingKeywords,
 
-    missingKeywords:
-      keywordComparison.missingKeywords,
+    resumeSkills: skillComparison.resumeSkills,
+    requiredSkills: skillComparison.requiredSkills,
 
-    resumeSkills:
-      skillComparison.resumeSkills,
-
-    requiredSkills:
-      skillComparison.requiredSkills,
-
-    matchingSkills:
-      skillComparison.matchingSkills,
-
-    missingSkills:
-      skillComparison.missingSkills,
+    matchingSkills: cleanMatchingSkills,
+    missingSkills: cleanMissingSkills,
 
     suggestions,
 
@@ -376,10 +404,7 @@ export function analyseResumeAgainstJob(
       bulletQuality,
     },
 
-    resumeWordCount:
-      getWordCount(resumeText),
-
-    jobDescriptionWordCount:
-      getWordCount(jobDescription),
+    resumeWordCount: getWordCount(resumeText),
+    jobDescriptionWordCount: getWordCount(jobDescription),
   };
 }

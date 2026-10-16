@@ -238,90 +238,61 @@ export const TECHNICAL_SKILLS = [
   "jira",
 ];
 
-function normalizeText(value: string): string {
-  return value
+export function cleanToken(text: string): string {
+  return text
     .toLowerCase()
-    .replace(/[^\p{L}\p{N}+#./-]+/gu, " ")
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    // Strip trailing/leading punctuation except internal dots/special characters in tech names
+    .replace(/(?<!\w)\.|\.(?!\w)|[^\w+#./-]/gi, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
 
-function normalizeKeyword(value: string): string {
-  return normalizeText(value)
-    .replace(/\bjs\b/g, "javascript")
-    .replace(/\bts\b/g, "typescript")
-    .replace(/\bnextjs\b/g, "next.js")
-    .replace(/\bnodejs\b/g, "node.js")
-    .replace(/\bpostgres\b/g, "postgresql")
-    .trim();
-}
-
 export function getWordCount(text: string): number {
-  const normalized = normalizeText(text);
-
-  if (!normalized) {
-    return 0;
-  }
-
-  return normalized.split(" ").filter(Boolean).length;
+  const cleaned = cleanToken(text);
+  if (!cleaned) return 0;
+  return cleaned.split(" ").filter(Boolean).length;
 }
 
 export function extractFrequentKeywords(
   text: string,
   limit = 35,
 ): string[] {
-  const normalized = normalizeText(text);
+  const normalized = text
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/[\n\r\t,./:;()"-]/g, " ")
+    .toLowerCase();
 
-  if (!normalized) {
-    return [];
-  }
-
-  const words = normalized
-    .split(" ")
-    .map((word) => word.trim())
-    .filter((word) => {
-      return (
-        word.length >= 3 &&
-        !STOP_WORDS.has(word) &&
-        !/^\d+$/.test(word)
-      );
-    });
+  const rawWords = normalized.split(/\s+/).filter(Boolean);
 
   const frequency = new Map<string, number>();
 
-  for (const word of words) {
-    const keyword = normalizeKeyword(word);
-
-    frequency.set(
-      keyword,
-      (frequency.get(keyword) ?? 0) + 1,
-    );
+  for (const word of rawWords) {
+    const trimmed = word.trim();
+    if (
+      trimmed.length >= 3 &&
+      !STOP_WORDS.has(trimmed) &&
+      !/^\d+$/.test(trimmed)
+    ) {
+      frequency.set(trimmed, (frequency.get(trimmed) ?? 0) + 1);
+    }
   }
 
   return [...frequency.entries()]
-    .sort((first, second) => {
-      if (second[1] !== first[1]) {
-        return second[1] - first[1];
-      }
-
-      return second[0].length - first[0].length;
-    })
+    .sort((a, b) => b[1] - a[1])
     .slice(0, limit)
-    .map(([keyword]) => keyword);
+    .map(([word]) => word);
 }
 
 export function extractSkills(text: string): string[] {
-  const normalizedText = ` ${normalizeText(text)} `;
+  const normalizedText = ` ${cleanToken(text)} `;
 
   const foundSkills = TECHNICAL_SKILLS.filter((skill) => {
-    const normalizedSkill = normalizeKeyword(skill);
-
-    return normalizedText.includes(` ${normalizedSkill} `);
+    const cleanSkill = cleanToken(skill);
+    return normalizedText.includes(` ${cleanSkill} `);
   });
 
-  return uniqueStrings(
-    foundSkills.map((skill) => formatKeyword(skill)),
-  );
+  return uniqueStrings(foundSkills.map((s) => formatKeyword(s)));
 }
 
 export function compareKeywords(
@@ -331,22 +302,20 @@ export function compareKeywords(
   matchingKeywords: string[];
   missingKeywords: string[];
 } {
-  const resumeNormalized = ` ${normalizeText(resumeText)} `;
+  const resumeNormalized = ` ${cleanToken(resumeText)} `;
   const jobKeywords = extractFrequentKeywords(jobDescription);
 
   const matchingKeywords: string[] = [];
   const missingKeywords: string[] = [];
 
   for (const keyword of jobKeywords) {
-    const normalizedKeyword = normalizeKeyword(keyword);
+    const cleanKw = cleanToken(keyword);
+    if (!cleanKw) continue;
 
-    if (
-      resumeNormalized.includes(` ${normalizedKeyword} `) ||
-      resumeNormalized.includes(normalizedKeyword)
-    ) {
-      matchingKeywords.push(formatKeyword(keyword));
+    if (resumeNormalized.includes(` ${cleanKw} `)) {
+      matchingKeywords.push(formatKeyword(cleanKw));
     } else {
-      missingKeywords.push(formatKeyword(keyword));
+      missingKeywords.push(formatKeyword(cleanKw));
     }
   }
 
@@ -376,16 +345,15 @@ export function compareSkills(
   const requiredSkills = extractSkills(jobDescription);
 
   const normalizedResumeSkills = new Set(
-    resumeSkills.map(normalizeKeyword),
+    resumeSkills.map((s) => cleanToken(s)),
   );
 
   const matchingSkills = requiredSkills.filter((skill) =>
-    normalizedResumeSkills.has(normalizeKeyword(skill)),
+    normalizedResumeSkills.has(cleanToken(skill)),
   );
 
   const missingSkills = requiredSkills.filter(
-    (skill) =>
-      !normalizedResumeSkills.has(normalizeKeyword(skill)),
+    (skill) => !normalizedResumeSkills.has(cleanToken(skill)),
   );
 
   return {
@@ -397,27 +365,27 @@ export function compareSkills(
 }
 
 export function uniqueStrings(values: string[]): string[] {
-  const valuesMap = new Map<string, string>();
+  const seen = new Set<string>();
+  const result: string[] = [];
 
-  for (const value of values) {
-    const trimmedValue = value.trim();
+  for (const val of values) {
+    const trimmed = val.trim();
+    if (!trimmed) continue;
 
-    if (!trimmedValue) {
-      continue;
-    }
-
-    const normalizedValue = normalizeKeyword(trimmedValue);
-
-    if (!valuesMap.has(normalizedValue)) {
-      valuesMap.set(normalizedValue, trimmedValue);
+    const lower = trimmed.toLowerCase();
+    if (!seen.has(lower)) {
+      seen.add(lower);
+      result.push(trimmed);
     }
   }
 
-  return [...valuesMap.values()];
+  return result;
 }
 
 export function formatKeyword(value: string): string {
-  const normalized = normalizeKeyword(value);
+  if (!value) return "";
+
+  const clean = cleanToken(value);
 
   const specialFormats: Record<string, string> = {
     aws: "AWS",
@@ -426,6 +394,7 @@ export function formatKeyword(value: string): string {
     "c#": "C#",
     "c++": "C++",
     "ci/cd": "CI/CD",
+    docker: "Docker",
     gcp: "GCP",
     git: "Git",
     github: "GitHub",
@@ -435,7 +404,9 @@ export function formatKeyword(value: string): string {
     mongodb: "MongoDB",
     mysql: "MySQL",
     "next.js": "Next.js",
+    nextjs: "Next.js",
     "node.js": "Node.js",
+    nodejs: "Node.js",
     nlp: "NLP",
     php: "PHP",
     postgresql: "PostgreSQL",
@@ -451,14 +422,13 @@ export function formatKeyword(value: string): string {
     vue: "Vue",
   };
 
-  if (specialFormats[normalized]) {
-    return specialFormats[normalized];
+  if (specialFormats[clean]) {
+    return specialFormats[clean];
   }
 
-  return normalized
+  return clean
     .split(" ")
-    .map((word) => {
-      return word.charAt(0).toUpperCase() + word.slice(1);
-    })
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 }

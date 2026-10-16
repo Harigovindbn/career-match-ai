@@ -11,6 +11,7 @@ import {
   Sparkles,
   Target,
   XCircle,
+  Bot,
 } from "lucide-react";
 
 import BulletImprovementCard from "@/components/resume-optimizer/BulletImprovementCard";
@@ -18,6 +19,8 @@ import OptimizedResumePreview from "@/components/resume-optimizer/OptimizedResum
 import { analyseResumeAgainstJob } from "@/lib/resume-optimizer/analyse-job";
 import { buildOptimizedResume } from "@/lib/resume-optimizer/build-optimized-resume";
 import type { ResumeOptimizerResult } from "@/lib/resume-optimizer/types";
+import { getAIBulletSuggestions } from "@/app/(protected)/resume-optimizer/actions";
+import type { AIBulletImprovement } from "@/lib/ai/gemini";
 
 type OptimizerWorkspaceProps = {
   resumeId?: string | null;
@@ -107,6 +110,10 @@ export default function OptimizerWorkspace({
   const [isAnalysing, setIsAnalysing] =
     useState(false);
 
+  const [aiSuggestions, setAiSuggestions] = useState<AIBulletImprovement[]>([]);
+  const [isAiLoading, setIsAiLoading] = useState(false);
+  const [aiError, setAiError] = useState("");
+
   const hasStoredResume = useMemo(
     () => initialResumeText.trim().length > 0,
     [initialResumeText],
@@ -128,6 +135,8 @@ export default function OptimizerWorkspace({
   function handleAnalyse() {
     setError("");
     setResult(null);
+    setAiSuggestions([]);
+    setAiError("");
 
     if (!resumeText.trim()) {
       setError(
@@ -174,6 +183,24 @@ export default function OptimizerWorkspace({
     } finally {
       setIsAnalysing(false);
     }
+  }
+
+  async function handleFetchAiSuggestions() {
+    if (!result || result.weakBullets.length === 0) return;
+
+    setIsAiLoading(true);
+    setAiError("");
+
+    const bulletList = result.weakBullets.map((b) => b.original);
+    const aiRes = await getAIBulletSuggestions(bulletList, jobDescription);
+
+    if (aiRes.success && aiRes.data) {
+      setAiSuggestions(aiRes.data);
+    } else {
+      setAiError(aiRes.message || "Failed to generate AI suggestions.");
+    }
+
+    setIsAiLoading(false);
   }
 
   return (
@@ -564,9 +591,64 @@ export default function OptimizerWorkspace({
           </section>
 
           {/* Bullet analysis */}
-          <BulletImprovementCard
-            bullets={result.weakBullets}
-          />
+          <div className="space-y-4">
+            <BulletImprovementCard
+              bullets={result.weakBullets}
+            />
+
+            {/* AI Enhancement Trigger */}
+            {result.weakBullets.length > 0 && (
+              <div className="rounded-[2rem] border border-blue-100 bg-blue-50/50 p-6 shadow-sm">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white">
+                      <Bot className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-slate-900">Gemini AI Bullet Re-writer</h3>
+                      <p className="text-xs text-slate-500">Generate tailored, action-oriented bullet replacements using Gemini AI.</p>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleFetchAiSuggestions}
+                    disabled={isAiLoading}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-semibold text-white shadow hover:bg-blue-700 transition disabled:opacity-50"
+                  >
+                    {isAiLoading ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Generating AI Improvements...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="h-4 w-4" />
+                        Generate AI Suggestions
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {aiError && (
+                  <p className="text-xs text-red-600 bg-red-50 p-3 rounded-lg border border-red-200 mt-2">{aiError}</p>
+                )}
+
+                {aiSuggestions.length > 0 && (
+                  <div className="space-y-3 mt-4 border-t border-blue-100 pt-4">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-blue-900">AI Suggested Improvements:</h4>
+                    {aiSuggestions.map((item, idx) => (
+                      <div key={idx} className="bg-white p-4 rounded-xl border border-blue-200 space-y-2 text-xs">
+                        <p className="text-slate-500 line-through">Original: {item.original}</p>
+                        <p className="font-semibold text-emerald-700">AI Improved: {item.improved}</p>
+                        <p className="text-slate-600 italic">Reason: {item.explanation}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
 
           {/* Optimized resume */}
           {optimizedResume ? (
