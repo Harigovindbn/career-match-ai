@@ -36,6 +36,6 @@ jobs:
       - name: Run Next.js Production Build
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co' }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key' }}
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || 'placeholder-key' }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || 'placeholder-gemini-key' }}
         run: npm run build

@@ -352,7 +352,7 @@ export default function AtsScoreWorkspace({
   }
 
   return (
-    <main className="min-h-screen bg-[#090a0f] px-4 py-12 text-white sm:px-6 lg:px-8">
+    <div className="text-white">
       <div className="mx-auto w-full max-w-7xl space-y-8">
         <section className="overflow-hidden rounded-[2rem] border border-[#21252d] bg-[#121417] p-7 text-white shadow-2xl sm:p-10">
           <div className="grid gap-8 lg:grid-cols-[1fr_340px] lg:items-center">
@@ -685,6 +685,6 @@ export default function AtsScoreWorkspace({
           </>
         )}
       </div>
-    </main>
+    </div>
   );
 }

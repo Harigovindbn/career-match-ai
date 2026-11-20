@@ -1,42 +1,64 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 
-type Theme = "dark" | "light" | "system";
+export type Theme = "dark" | "light" | "system";
 
 type ThemeContextType = {
   theme: Theme;
   setTheme: (theme: Theme) => void;
 };
 
+export const THEME_STORAGE_KEY = "career-match-theme";
+
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+function readStoredTheme(): Theme {
+  if (typeof window === "undefined") return "dark";
+  try {
+    const saved = window.localStorage.getItem(THEME_STORAGE_KEY);
+    return saved === "light" || saved === "system" || saved === "dark" ? saved : "dark";
+  } catch {
+    return "dark";
+  }
+}
+
+function applyTheme(selectedTheme: Theme) {
+  const root = document.documentElement;
+  const resolved =
+    selectedTheme === "system"
+      ? window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light"
+      : selectedTheme;
+  root.classList.remove("dark", "light");
+  root.classList.add(resolved);
+  root.style.colorScheme = resolved;
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("dark");
+  // Lazy initialiser reads localStorage once on the client; the inline script
+  // in the root layout has already applied the class before hydration.
+  const [theme, setThemeState] = useState<Theme>(readStoredTheme);
 
   useEffect(() => {
-    const savedTheme = (localStorage.getItem("career-match-theme") as Theme) || "dark";
-    setThemeState(savedTheme);
-    applyTheme(savedTheme);
-  }, []);
+    applyTheme(theme);
 
-  function applyTheme(selectedTheme: Theme) {
-    const root = document.documentElement;
-    root.classList.remove("dark", "light");
+    if (theme !== "system") return;
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const onChange = () => applyTheme("system");
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
+  }, [theme]);
 
-    if (selectedTheme === "system") {
-      const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      root.classList.add(systemPrefersDark ? "dark" : "light");
-    } else {
-      root.classList.add(selectedTheme);
-    }
-  }
-
-  function setTheme(newTheme: Theme) {
+  const setTheme = useCallback((newTheme: Theme) => {
     setThemeState(newTheme);
-    localStorage.setItem("career-match-theme", newTheme);
-    applyTheme(newTheme);
-  }
+    try {
+      window.localStorage.setItem(THEME_STORAGE_KEY, newTheme);
+    } catch {
+      // Storage may be unavailable (private mode); theme still applies for this session.
+    }
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>

@@ -36,7 +36,8 @@ export async function saveProfile(formData: FormData) {
 
   const { error } = await supabase
     .from("profiles")
-    .update({
+    .upsert({
+      id: user.id,
       full_name: fullName,
       professional_title: getOptionalValue(
         formData,
@@ -49,8 +50,7 @@ export async function saveProfile(formData: FormData) {
       github_url: getOptionalValue(formData, "github_url"),
       portfolio_url: getOptionalValue(formData, "portfolio_url"),
       updated_at: new Date().toISOString(),
-    })
-    .eq("id", user.id);
+    }, { onConflict: "id" });
 
   if (error) {
     console.error("Profile update failed:", error);

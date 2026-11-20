@@ -1,8 +1,15 @@
+"use client";
+
+import { useActionState } from "react";
 import Link from "next/link";
-import { Sparkles, ArrowRight, User, Mail, Lock, ArrowLeft } from "lucide-react";
-import { signUp } from "./actions";
+import { Sparkles, ArrowRight, User, Mail, Lock, ArrowLeft, Loader2 } from "lucide-react";
+import { signUp, type SignUpState } from "./actions";
+
+const initialState: SignUpState = { error: null };
 
 export default function SignUpPage() {
+  const [state, formAction, isPending] = useActionState(signUp, initialState);
+
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#090a0f] px-4 py-12 text-white">
       <div className="w-full max-w-md rounded-3xl border border-[#21252d] bg-[#121417] p-8 shadow-2xl">
@@ -26,7 +33,13 @@ export default function SignUpPage() {
         </div>
 
         {/* Signup Form */}
-        <form action={signUp} className="space-y-5">
+        {state.error && (
+          <div role="alert" className="mb-5 rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-400">
+            {state.error}
+          </div>
+        )}
+
+        <form action={formAction} className="space-y-5">
           {/* Full Name Field */}
           <div>
             <label
@@ -106,10 +119,20 @@ export default function SignUpPage() {
           {/* Submit CTA */}
           <button
             type="submit"
-            className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#99f6e4] px-5 py-3 text-sm font-semibold text-[#042f2e] transition hover:bg-[#5eead4] shadow-lg shadow-[#99f6e4]/15 cursor-pointer"
+            disabled={isPending}
+            className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#99f6e4] px-5 py-3 text-sm font-semibold text-[#042f2e] transition hover:bg-[#5eead4] shadow-lg shadow-[#99f6e4]/15 cursor-pointer disabled:opacity-50"
           >
-            Create account
-            <ArrowRight className="h-4 w-4" />
+            {isPending ? (
+              <>
+                Creating account...
+                <Loader2 className="h-4 w-4 animate-spin" />
+              </>
+            ) : (
+              <>
+                Create account
+                <ArrowRight className="h-4 w-4" />
+              </>
+            )}
           </button>
         </form>
 

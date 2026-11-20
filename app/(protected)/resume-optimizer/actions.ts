@@ -270,18 +270,12 @@ export async function getAIBulletSuggestions(
 
     const aiResult = await generateAIBulletImprovements(bulletPoints, jobDescription);
 
-    if (!aiResult.success || !aiResult.data) {
-      // Fallback response if GEMINI API call fails or is unconfigured, allowing the UI demo workflow to persist seamlessly
-      const fallbackData: AIBulletImprovement[] = bulletPoints.map((bullet) => ({
-        original: bullet,
-        improved: `Spearheaded initiatives for ${bullet.toLowerCase()}, driving a 30% performance boost and ensuring complete cross-functional alignment.`,
-        reason: "Enhanced with action-oriented vocabulary, measurable impact metrics, and tailored target keywords.",
-        explanation: "Enhanced with action-oriented vocabulary, measurable impact metrics, and tailored target keywords.",
-      }));
-
+    if (!aiResult.success || !aiResult.data || aiResult.data.length === 0) {
       return {
-        success: true,
-        data: fallbackData,
+        success: false,
+        message:
+          aiResult.error ||
+          "AI suggestions are unavailable right now. Please try again in a moment.",
       };
     }
 
@@ -290,18 +284,10 @@ export async function getAIBulletSuggestions(
       data: aiResult.data,
     };
   } catch (error) {
-    console.warn("Unexpected AI bullet suggestion error, providing fallback:", error);
-    
-    const fallbackData: AIBulletImprovement[] = bulletPoints.map((bullet) => ({
-      original: bullet,
-      improved: `Engineered solutions for ${bullet.toLowerCase()}, elevating efficiency and accelerating deployment velocity.`,
-      reason: "Optimized automatically for high-impact technical positioning.",
-      explanation: "Optimized automatically for high-impact technical positioning.",
-    }));
-
+    console.warn("Unexpected AI bullet suggestion error:", error);
     return {
-      success: true,
-      data: fallbackData,
+      success: false,
+      message: "Something went wrong while generating AI suggestions.",
     };
   }
 }

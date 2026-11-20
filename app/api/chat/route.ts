@@ -1,39 +1,89 @@
 import { NextResponse } from "next/server";
 
-export async function POST(req: Request) {
-  try {
-    const { messages } = await req.json();
-    const latestMessage = messages[messages.length - 1]?.content || "";
+import {
+  isGeminiConfigured,
+  streamCareerCoachReply,
+  type ChatTurn,
+} from "@/lib/ai/gemini";
+import { createClient } from "@/lib/supabase/server";
 
-    // Simulate intelligent AI career coaching response based on prompt keywords
-    let responseText = `That's a great question regarding your career trajectory. Based on your profile and target roles, I recommend focusing on measurable impact (e.g., "Increased conversion rates by 24%") rather than just listing duties.`;
+function parseMessages(value: unknown): ChatTurn[] | null {
+  if (!Array.isArray(value)) return null;
 
-    const lower = latestMessage.toLowerCase();
-    if (lower.includes("resume") || lower.includes("cv")) {
-      responseText = "When updating your resume for ATS systems, make sure to mirror the exact keywords found in the job description. Avoid multi-column layouts or complex graphics that confuse parsers.";
-    } else if (lower.includes("interview") || lower.includes("behavioral")) {
-      responseText = "For behavioral interviews, always use the STAR method (Situation, Task, Action, Result). Quantify your results whenever possible to show clear business value.";
-    } else if (lower.includes("salary") || lower.includes("negotiate")) {
-      responseText = "When negotiating salary, always anchor to market research data rather than your current compensation. Wait for them to make the first offer if possible!";
+  const turns: ChatTurn[] = [];
+  for (const item of value) {
+    if (typeof item !== "object" || item === null) continue;
+    const { role, content } = item as Record<string, unknown>;
+    if ((role === "user" || role === "assistant") && typeof content === "string" && content.trim()) {
+      turns.push({ role, content });
     }
-
-    // Simulate realistic streaming response chunk by chunk
-    const encoder = new TextEncoder();
-    const stream = new ReadableStream({
-      async start(controller) {
-        const words = responseText.split(" ");
-        for (const word of words) {
-          controller.enqueue(encoder.encode(word + " "));
-          await new Promise((resolve) => setTimeout(resolve, 35)); // Typing speed simulation
-        }
-        controller.close();
-      },
-    });
-
-    return new Response(stream, {
-      headers: { "Content-Type": "text/plain; charset=utf-8" },
-    });
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to process chat message" }, { status: 500 });
   }
+  return turns;
+}
+
+export async function POST(req: Request) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json({ error: "You must be signed in to use the assistant." }, { status: 401 });
+  }
+
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
+  }
+
+  const messages = parseMessages((body as { messages?: unknown })?.messages);
+  if (!messages || messages.length === 0 || messages[messages.length - 1].role !== "user") {
+    return NextResponse.json({ error: "A user message is required." }, { status: 400 });
+  }
+
+  if (!isGeminiConfigured()) {
+    return NextResponse.json(
+      { error: "The AI assistant is not configured. Add GEMINI_API_KEY to .env.local." },
+      { status: 503 },
+    );
+  }
+
+  const metadataName =
+    typeof user.user_metadata?.full_name === "string" ? user.user_metadata.full_name.trim() : "";
+
+  let chunks: AsyncIterable<string>;
+  try {
+    chunks = await streamCareerCoachReply(messages, metadataName || undefined);
+  } catch (error) {
+    console.error("AI assistant error:", error);
+    return NextResponse.json(
+      { error: "The AI service is busy right now. Please try again in a moment." },
+      { status: 503 },
+    );
+  }
+
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream({
+    async start(controller) {
+      try {
+        for await (const text of chunks) {
+          controller.enqueue(encoder.encode(text));
+        }
+      } catch (error) {
+        console.error("AI assistant stream error:", error);
+        controller.enqueue(encoder.encode("\n\n[The response was interrupted. Please try again.]"));
+      } finally {
+        controller.close();
+      }
+    },
+  });
+
+  return new Response(stream, {
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "no-store",
+    },
+  });
 }

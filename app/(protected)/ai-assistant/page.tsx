@@ -1,7 +1,22 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Bot, Send, Sparkles, User, Loader2, RefreshCw } from "lucide-react";
+import { Bot, Send, Sparkles, User, Loader2 } from "lucide-react";
+
+/** Minimal formatter for AI replies: keeps line breaks and renders **bold**. */
+function FormattedMessage({ content }: { content: string }) {
+  return (
+    <div className="whitespace-pre-wrap break-words">
+      {content.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
+        part.startsWith("**") && part.endsWith("**") && part.length > 4 ? (
+          <strong key={i}>{part.slice(2, -2)}</strong>
+        ) : (
+          <span key={i}>{part.replace(/^\s*[*-]\s+/gm, "• ").replace(/^#{1,6}\s+/gm, "")}</span>
+        ),
+      )}
+    </div>
+  );
+}
 
 type Message = {
   id: string;
@@ -14,7 +29,7 @@ export default function AIAssistantPage() {
     {
       id: "1",
       role: "assistant",
-      content: "Hello Alex! I'm your AI Career Coach. How can I help you optimize your resume, prepare for interviews, or navigate job matches today?",
+      content: "Hello! I'm your AI Career Coach. How can I help you optimize your resume, prepare for interviews, or navigate job matches today?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -50,7 +65,10 @@ export default function AIAssistantPage() {
         body: JSON.stringify({ messages: newMessages }),
       });
 
-      if (!res.ok) throw new Error("Failed to fetch response");
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error || "Failed to fetch response");
+      }
 
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
@@ -79,12 +97,13 @@ export default function AIAssistantPage() {
         }
       }
     } catch (err) {
+      const reason = err instanceof Error && err.message !== "Failed to fetch response" ? ` (${err.message})` : "";
       setMessages((prev) => [
-        ...prev,
+        ...prev.filter((msg) => msg.content !== ""),
         {
           id: Date.now().toString(),
           role: "assistant",
-          content: "Sorry, I encountered an error connecting to the AI service. Please try again.",
+          content: `Sorry, I couldn't reach the AI service${reason}. Please try again.`,
         },
       ]);
     } finally {
@@ -115,7 +134,7 @@ export default function AIAssistantPage() {
       <div className="flex-1 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-4 sm:p-6 shadow-2xl flex flex-col justify-between h-[65vh]">
         {/* Messages Scroll Area */}
         <div className="flex-1 overflow-y-auto space-y-4 pr-2">
-          {messages.map((m) => (
+          {messages.filter((m) => m.content !== "").map((m) => (
             <div
               key={m.id}
               className={`flex items-start gap-3 ${
@@ -138,11 +157,11 @@ export default function AIAssistantPage() {
                     : "border border-[var(--border)] bg-[var(--surface-soft)] text-[var(--foreground)] rounded-tl-none"
                 }`}
               >
-                {m.content}
+                {m.role === "assistant" ? <FormattedMessage content={m.content} /> : m.content}
               </div>
             </div>
           ))}
-          {isLoading && messages[messages.length - 1]?.role === "user" && (
+          {isLoading && (messages[messages.length - 1]?.role === "user" || messages[messages.length - 1]?.content === "") && (
             <div className="flex items-start gap-3">
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] text-[var(--foreground)]">
                 <Bot className="h-4 w-4" />
