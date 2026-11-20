@@ -51,16 +51,6 @@ npm install
 
 Create `.env.local` in the project root:
 
-```bash
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your_supabase_publishable_key
-GEMINI_API_KEY=your_gemini_api_key
-
-# Optional
-# GEMINI_MODEL=gemini-flash-latest          # preferred Gemini model (falls back automatically)
-# NEXT_PUBLIC_SITE_URL=https://your-domain   # base URL used in auth email links
-```
-
 `.env*` files are git-ignored. Never commit real keys.
 
 ### 4. Set up Supabase
