@@ -11,6 +11,13 @@ export async function createClient() {
     throw new Error("Supabase environment variables are missing.");
   }
 
+  if (supabaseKey.startsWith("sb_secret_")) {
+    throw new Error(
+      "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY contains a Supabase SECRET key. " +
+        "Use the publishable key (sb_publishable_...) from Project Settings -> API Keys.",
+    );
+  }
+
   return createServerClient(supabaseUrl, supabaseKey, {
     cookies: {
       getAll() {
